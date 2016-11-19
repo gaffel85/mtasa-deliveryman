@@ -1,0 +1,14 @@
+<def name="Delivery Man">
+	<element name="deliveryManSpawnpoint" friendlyname="Delivery Man Spawnpoint">
+		<data name="position" type="coord3d" default="0,0,0" />
+		<data name="rotation" type="number" default="0" />
+		<data name="skin" type="skinID" default="0" />
+		<ped model="!skin!" position="!position!" rotZ="!rotation!" />
+	</element>
+	<element name="hunterSpawnpoint" friendlyname="Hunter Spawnpoint">
+		<data name="position" type="coord3d" default="0,0,0" />
+		<data name="rotation" type="number" default="0" />
+		<data name="skin" type="skinID" default="0" />
+		<ped model="!skin!" position="!position!" rotZ="!rotation!" />
+	</element>
+</def>
