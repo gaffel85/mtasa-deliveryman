@@ -1,8 +1,0 @@
-<meta>
-    <info author="Ola Gawell" type="gamemode" name="Delivery Man" description="Deliver a package before shot down"  edf:definition="delivyerman.edf" />
-	<include resource="scoreboard"/>
-	<include resource="votemanager"/>
-	<include resource="killmessages" />
-	<include resource="easytext" />
-	
-</meta>
