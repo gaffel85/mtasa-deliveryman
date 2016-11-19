@@ -1,0 +1,22 @@
+<def name="Delivery Man">
+	<element name="hunterSpawnpoint" friendlyname="Hunter Spawnpoint">
+		<data name="position" type="coord3d" default="0,0,0" />
+		<data name="rotation" type="number" default="0" />
+		<data name="skin" type="skinID" default="0" />
+		<ped model="!skin!" position="!position!" rotZ="!rotation!" />
+	</element>
+	<element name="checkpoint" friendlyname="Deliver checkpoint">
+		<data name="position" type="coord3d" required="true" default="0,0,0" />
+		<data name="type" type="selection:checkpoint,ring" required="true" default="checkpoint" />
+		<data name="size" type="number" required="true" default="20.0"/>
+		<data name="color" type="color" required="false" default="#0000ffff" />
+		<marker type="!type!" size="!size!" color="!color!" />
+	</element>
+	<element name="deliveryCar" friendlyname="Delivery Car">
+		<data name="position" type="coord3d" required="true" default="0,0,0" />
+		<data name="rotation" type="number" default="0" />
+		<data name="model" type="vehicleID" default="541" />
+		<data name="plate" type="plate" default="PostNord" />
+		<vehicle model="!model!" />
+	</element>
+</def>
