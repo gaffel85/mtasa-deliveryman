@@ -1,0 +1,37 @@
+<map edf:definitions="delveriyman,editor_main">
+    <deliveryManSpawnpoint id="deliveryManSpawnpoint (1)" skin="0" posX="-2792" posY="138.39941" posZ="7.9" rotX="0" rotY="0" rotZ="0"></deliveryManSpawnpoint>
+    <vehicle id="vehicle (Bullet) (2)" paintjob="3" interior="0" alpha="255" model="541" plate="HV1P32Q" dimension="0" color="105,30,59,245,245,245,0,0,0,0,0,0" posX="-2796.2998" posY="145.5" posZ="6.9" rotX="0" rotY="0" rotZ="90"></vehicle>
+    <hunterSpawnpoint id="hunterSpawnpoint (1)" skin="0" posX="-1346" posY="502.5" posZ="18.2" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (2)" skin="0" alpha="255" interior="0" posX="-1347.30005" posY="502.5" posZ="18.2" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (3)" skin="0" alpha="255" interior="0" posX="-1348.69995" posY="502.39999" posZ="18.2" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (4)" skin="0" alpha="255" interior="0" posX="-1350.59998" posY="502.5" posZ="18.2" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (5)" skin="0" alpha="255" interior="0" posX="-1352.69995" posY="502.39999" posZ="18.2" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (6)" skin="0" alpha="255" interior="0" posX="-1345.90002" posY="507.20001" posZ="18.2" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (7)" skin="0" alpha="255" interior="0" posX="-1347.5" posY="507.20001" posZ="18.2" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (8)" skin="0" alpha="255" interior="0" posX="-1349" posY="507.20001" posZ="18.2" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (9)" skin="0" alpha="255" interior="0" posX="-1350.80005" posY="507.20001" posZ="18.2" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (10)" skin="0" alpha="255" interior="0" posX="-1352.90002" posY="507.10001" posZ="18.2" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (11)" skin="0" alpha="255" interior="0" posX="-1345.80005" posY="510.89999" posZ="18.2" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (12)" skin="0" alpha="255" interior="0" posX="-1347.90002" posY="510.79999" posZ="18.2" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (13)" skin="0" alpha="255" interior="0" posX="-1349.5" posY="510.89999" posZ="18.2" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (14)" skin="0" alpha="255" interior="0" posX="-1351.30005" posY="510.70001" posZ="18.2" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (15)" skin="0" alpha="255" interior="0" posX="-1353.40002" posY="510.70001" posZ="18.2" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (16)" skin="0" alpha="255" interior="0" posX="-1340.19922" posY="526.19922" posZ="0" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <vehicle id="vehicle (Hydra) (1)" paintjob="3" interior="0" alpha="255" model="520" plate="5IN4Q8G" dimension="0" color="0,0,0,0,0,0,0,0,0,0,0,0" posX="-1333.09998" posY="508.29999" posZ="19.2" rotX="0" rotY="0" rotZ="270"></vehicle>
+    <vehicle id="vehicle (Hydra) (2)" paintjob="3" interior="0" alpha="255" model="520" plate="1OIRSQ2" dimension="0" color="0,0,0,0,0,0,0,0,0,0,0,0" posX="-1302.5" posY="507.89999" posZ="19.2" rotX="0" rotY="0" rotZ="270"></vehicle>
+    <vehicle id="vehicle (Hydra) (3)" paintjob="3" interior="0" alpha="255" model="520" plate="HPUSCSM" dimension="0" color="0,0,0,0,0,0,0,0,0,0,0,0" posX="-1292.09998" posY="493.60001" posZ="19.2" rotX="0" rotY="0" rotZ="270"></vehicle>
+    <vehicle id="vehicle (Hydra) (4)" paintjob="3" interior="0" alpha="255" model="520" plate="FRYZ5S9" dimension="0" color="0,0,0,0,0,0,0,0,0,0,0,0" posX="-1269.09998" posY="499.39999" posZ="19.2" rotX="0" rotY="0" rotZ="270"></vehicle>
+    <vehicle id="vehicle (Hydra) (5)" paintjob="3" interior="0" alpha="255" model="520" plate="0Q2NL1N" dimension="0" color="0,0,0,0,0,0,0,0,0,0,0,0" posX="-1363.5" posY="508.10001" posZ="19.2" rotX="0" rotY="0" rotZ="270"></vehicle>
+    <vehicle id="vehicle (Hydra) (6)" paintjob="3" interior="0" alpha="255" model="520" plate="IHRWAGZ" dimension="0" color="0,0,0,0,0,0,0,0,0,0,0,0" posX="-1395.40002" posY="508.39999" posZ="19.1" rotX="0" rotY="0" rotZ="270"></vehicle>
+    <vehicle id="vehicle (Hydra) (7)" paintjob="3" interior="0" alpha="255" model="520" plate="IBDFCBU" dimension="0" color="0,0,0,0,0,0,0,0,0,0,0,0" posX="-1414.09998" posY="493.39999" posZ="19.2" rotX="0" rotY="0" rotZ="270"></vehicle>
+    <vehicle id="vehicle (Hydra) (8)" paintjob="3" interior="0" alpha="255" model="520" plate="NQ5WAM6" dimension="0" color="0,0,0,0,0,0,0,0,0,0,0,0" posX="-1424.90002" posY="507.79999" posZ="19.1" rotX="0" rotY="0" rotZ="270"></vehicle>
+    <checkpoint id="checkpoint (1)" color="#0000FFFF" type="checkpoint" size="20" posX="-2808.80005" posY="-69.2" posZ="27.1" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (2)" color="#0000FFFF" type="checkpoint" size="20" posX="-2873.8999" posY="-936.40002" posZ="51.2" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (4)" color="#0000FFFF" type="checkpoint" size="20" alpha="255" interior="0" posX="-2933.80005" posY="-1517.30005" posZ="35.7" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (5)" color="#0000FFFF" type="checkpoint" size="40" posX="-2536.1001" posY="-2191.3999" posZ="29" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (6)" color="#0000FFFF" type="checkpoint" size="20" posX="-1133.69995" posY="-2858.8999" posZ="97.2" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (7)" color="#0000FFFF" type="checkpoint" size="50" posX="-56.9" posY="-2799" posZ="76.5" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (8)" color="#0000FFFF" type="checkpoint" size="40" posX="-215.5" posY="-1559.5" posZ="14.8" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (9)" color="#0000FFFF" type="checkpoint" size="40" posX="88" posY="-1270.69995" posZ="9.7" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (10)" color="#0000FFFF" type="checkpoint" size="40" posX="625" posY="-1213.40002" posZ="17.1" rotX="0" rotY="0" rotZ="0"></checkpoint>
+</map>
