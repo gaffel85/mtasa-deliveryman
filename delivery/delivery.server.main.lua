@@ -25,9 +25,15 @@ function spawn(thePlayer)
 		local deliveryManPed = createPed ( 252, 0, 0, 3 )
 		spawnX, spawnY, spawnZ = getRandomSpawnPoint()
 		deliveryCar = createVehicle ( 566, spawnX,spawnY,spawnZ )
-		warpPedIntoVehicle ( deliveryManPed, deliveryCar )
-		fadeCamera(thePlayer, true)
-		setCameraTarget(thePlayer, thePlayer)
+		
+        spawnPlayer(thePlayer, spawnX + 5, spawnY, spawnZ) 
+        if deliveryCar  then 
+            setTimer(warpPedIntoVehicle, 50, 1, thePlayer, deliveryCar) 
+        end 
+		
+
+--		fadeCamera(thePlayer, true)
+--		setCameraTarget(thePlayer, thePlayer)
 	else
 		local spawnX, spawnY, spawnZ
 		if(spawnPoints == nil) then
