@@ -19,4 +19,11 @@
 		<data name="plate" type="plate" default="PostNord" />
 		<vehicle model="!model!" />
 	</element>
+	<element name="hunterJetSpawn" friendlyname="Hunter Jet">
+		<data name="position" type="coord3d" required="true" default="0,0,0" />
+		<data name="rotation" type="number" default="0" />
+		<data name="model" type="vehicleID" default="520" />
+		<data name="plate" type="plate" default="Hunter" />
+		<vehicle model="!model!" />
+	</element>
 </def>

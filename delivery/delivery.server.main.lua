@@ -29,19 +29,21 @@ end
 
 function spawn(thePlayer)
 	if (thePlayer == deliveryMan) then
-		local deliveryManPed = createPed ( 252, 0, 0, 3 )
 		spawnX, spawnY, spawnZ = getRandomSpawnPoint()
-		deliveryCar = createVehicle ( 566, spawnX,spawnY,spawnZ )
+		--deliveryCar = createVehicle ( 566, spawnX,spawnY,spawnZ )
+		outputDebugString("Will Spawn player")
 		
         spawnPlayer(thePlayer, spawnX + 5, spawnY, spawnZ) 
         if deliveryCar  then 
-            setTimer(warpPedIntoVehicle, 50, 1, thePlayer, deliveryCar) 
+            outputDebugString("Will warp to car: "..getVehicleName(deliveryCar))
+			setTimer(warpPedIntoVehicle, 50, 1, thePlayer, deliveryCar) 
         end 
 		
 
---		fadeCamera(thePlayer, true)
---		setCameraTarget(thePlayer, thePlayer)
+		fadeCamera(thePlayer, true)
+		setCameraTarget(thePlayer, thePlayer)
 	else
+		outputDebugString("Spawning hunter")
 		local spawnX, spawnY, spawnZ
 		if(spawnPoints == nil) then
 			spawnX = fallbackSpawnX
@@ -67,15 +69,33 @@ end
 function startGameMap( startedMap )
 	local mapRoot = getResourceRootElement( startedMap ) 
     spawnPoints = getElementsByType ( "hunterSpawnpoint" , mapRoot )
-	deliveryCar = getElementsByType ( "deliveryCar" , mapRoot )[0]
-	-- respawnAllPlayers()
+	deliveryCar = createDeliveryCar(getElementsByType ( "deliveryCar" , mapRoot )[1])
+	
+	outputDebugString("Did load spawns: "..#spawnPoints)
+	if deliveryCar ~= nil then
+		outputDebugString("Did load deliveryCar: "..getVehicleName(deliveryCar))
+	end
+	respawnAllPlayers()
 end
 addEventHandler("onGamemodeMapStart", getRootElement(), startGameMap)
 
+function createDeliveryCar(element)
+	local posX = getElementData ( element, "posX" )
+	local posY = getElementData ( element, "posY" )
+	local posZ = getElementData ( element, "posZ" )
+	local rotX = getElementData ( element, "rotX" )
+	local rotY = getElementData ( element, "rotY" )
+	local rotZ = getElementData ( element, "rotZ" )
+	local model = getElementData ( element, "model" )
+	local plate = getElementData ( element, "plate" )
+	outputDebugString(posX.." "..posY.." "..posZ.." "..rotX.." "..rotY.." "..rotZ.." "..model.." "..plate)
+	return createVehicle(model, posX, posY, posZ, rotX, rotY, rotZ, plate)
+end
+
 function joinHandler()
-	if(deliveryMan == nil) then
+	--if(deliveryMan == nil) then
 		deliveryMan = source
-	end
+	--end
 	spawn(source)
 	outputChatBox("Welcome to My Server", source)
 	-- setElementModel ( source, normalModel )
@@ -87,6 +107,11 @@ function commitSuicide ( sourcePlayer )
 	killPed ( sourcePlayer, sourcePlayer )
 end
 addCommandHandler ( "kill", commitSuicide )
+
+function nextRound ( sourcePlayer )
+	changeGamemodeMap (getRunningGamemodeMap ())
+end
+addCommandHandler ( "next", nextRound )
 
 function displayMessageForPlayer ( player, ID, message, displayTime, posX, posY, r, g, b, alpha, scale )
 	assert ( player and ID and message )
