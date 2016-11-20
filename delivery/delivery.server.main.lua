@@ -4,6 +4,13 @@ local deliveryCar
 local deliveryMan
 players = getElementsByType ( "player" )
 
+function exitVehicle ( thePlayer, seat, jacked ) 
+   if (thePlayer == deliveryMan) then 
+      cancelEvent()
+   end
+end
+addEventHandler ( "onVehicleStartExit", getRootElement(), exitVehicle)
+
 function getRandomSpawnPoint ()
 	local point = spawnPoints[math.random(1,#spawnPoints)]
 	local posX = getElementData ( point, "posX" )
