@@ -1,8 +1,11 @@
 local fallbackSpawnX, fallbackSpawnY, fallbackSpawnZ = 1959.55, -1714.46, 10
 local spawnPoints
+local checkPointCoords
 local deliveryCar
 local deliveryMan
-players = getElementsByType ( "player" )
+local lastHunterSpawn = 1
+local xMans = {}
+local gameStarted = false
 
 function exitVehicle ( thePlayer, seat, jacked ) 
    if (thePlayer == deliveryMan) then 
@@ -11,8 +14,9 @@ function exitVehicle ( thePlayer, seat, jacked )
 end
 addEventHandler ( "onVehicleStartExit", getRootElement(), exitVehicle)
 
-function getRandomSpawnPoint ()
-	local point = spawnPoints[math.random(1,#spawnPoints)]
+function getNextHunterSpawn ()
+	local point = spawnPoints[lastHunterSpawn]
+	lastHunterSpawn = (lastHunterSpawn % #spawnPoints) + 1
 	local posX = getElementData ( point, "posX" )
 	local posY = getElementData ( point, "posY" )
 	local posZ = getElementData ( point, "posZ" )
@@ -29,11 +33,10 @@ end
 
 function spawn(thePlayer)
 	if (thePlayer == deliveryMan) then
-		spawnX, spawnY, spawnZ = getRandomSpawnPoint()
 		--deliveryCar = createVehicle ( 566, spawnX,spawnY,spawnZ )
 		outputDebugString("Will Spawn player")
 		
-        spawnPlayer(thePlayer, spawnX + 5, spawnY, spawnZ) 
+        spawnPlayer(thePlayer, 0, 0, 0) 
         if deliveryCar  then 
             outputDebugString("Will warp to car: "..getVehicleName(deliveryCar))
 			setTimer(warpPedIntoVehicle, 50, 1, thePlayer, deliveryCar) 
@@ -50,7 +53,7 @@ function spawn(thePlayer)
 			spawnY = fallbackSpawnY
 			spawnZ = fallbackSpawnZ
 		else
-			spawnX, spawnY, spawnZ = getRandomSpawnPoint()
+			spawnX, spawnY, spawnZ = getNextHunterSpawn()
 		end
 		
 		spawnPlayer(thePlayer, spawnX, spawnY, spawnZ, 0, normalModel)
@@ -66,18 +69,76 @@ function respawnAllPlayers()
 	end
 end
 
+function newRound()
+	--destroyElement ( root )
+	deliveryCar = createDeliveryCar(getElementsByType ( "deliveryCar" , mapRoot )[1])
+	createCheckpoints()
+	createHunterJets()
+	respawnAllPlayers()
+end
+
+function startGame()
+	local players = getElementsByType ( "player" )
+	if (#players > 0) then
+		deliveryMan = nil
+		while (deliveryMan == nil) do
+			local candidate = players[math.random(1,#players)]
+			if (arrayExists(xMans, candidate) == false) then
+				deliveryMan = candidate;
+			end
+		end
+	end
+	gameStarted = true;
+end
+
+function arrayExists (tab, val)
+    for index, value in ipairs (tab) do
+        if value == val then
+            return true
+        end
+    end
+
+    return false
+end
+
+function destroyElementsByType(elementType)
+	local elements = getElementsByType(elementType)
+	for i,v in ipairs(elements) do
+		destroyElement(v)
+	end
+end
+
 function startGameMap( startedMap )
 	local mapRoot = getResourceRootElement( startedMap ) 
     spawnPoints = getElementsByType ( "hunterSpawnpoint" , mapRoot )
-	deliveryCar = createDeliveryCar(getElementsByType ( "deliveryCar" , mapRoot )[1])
-	
-	outputDebugString("Did load spawns: "..#spawnPoints)
-	if deliveryCar ~= nil then
-		outputDebugString("Did load deliveryCar: "..getVehicleName(deliveryCar))
-	end
-	respawnAllPlayers()
+	checkPointCoords = getElementsByType ( "checkpoint" , mapRoot )
+	startGame()
+	newRound()
 end
 addEventHandler("onGamemodeMapStart", getRootElement(), startGameMap)
+
+function createCheckpoints() 
+	for i,v in ipairs(checkPointCoords) do
+		createCheckPoint(v)
+	end
+end
+
+function createHunterJets()
+	local elements = getElementsByType("hunterJetSpawn")
+	for i,v in ipairs(elements) do
+		createHunterJet(v)
+	end
+end
+
+function createCheckPoint(element)
+	local posX = getElementData ( element, "posX" )
+	local posY = getElementData ( element, "posY" )
+	local posZ = getElementData ( element, "posZ" )
+	local checkType = getElementData ( element, "type" )
+	local color = getElementData ( element, "color" )
+	local size = getElementData ( element, "size" )
+	return createMarker(posX, posY, posZ, checkType, size)
+end
 
 function createDeliveryCar(element)
 	local posX = getElementData ( element, "posX" )
@@ -88,14 +149,26 @@ function createDeliveryCar(element)
 	local rotZ = getElementData ( element, "rotZ" )
 	local model = getElementData ( element, "model" )
 	local plate = getElementData ( element, "plate" )
-	outputDebugString(posX.." "..posY.." "..posZ.." "..rotX.." "..rotY.." "..rotZ.." "..model.." "..plate)
+	return createVehicle(model, posX, posY, posZ, rotX, rotY, rotZ, plate)
+end
+
+function createHunterJet(element)
+	local posX = getElementData ( element, "posX" )
+	local posY = getElementData ( element, "posY" )
+	local posZ = getElementData ( element, "posZ" )
+	local rotX = getElementData ( element, "rotX" )
+	local rotY = getElementData ( element, "rotY" )
+	local rotZ = getElementData ( element, "rotZ" )
+	local model = getElementData ( element, "model" )
+	local plate = getElementData ( element, "plate" )
 	return createVehicle(model, posX, posY, posZ, rotX, rotY, rotZ, plate)
 end
 
 function joinHandler()
-	--if(deliveryMan == nil) then
+	
+	if(gameStarted and deliveryMan == nil) then
 		deliveryMan = source
-	--end
+	end
 	spawn(source)
 	outputChatBox("Welcome to My Server", source)
 	-- setElementModel ( source, normalModel )
