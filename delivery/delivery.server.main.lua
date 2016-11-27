@@ -1,6 +1,9 @@
 local fallbackSpawnX, fallbackSpawnY, fallbackSpawnZ = 1959.55, -1714.46, 10
 local spawnPoints
 local checkPointCoords
+local checkPoints = {}
+local currentCheckpoint
+local currentCheckpointBlip
 local deliveryCar
 local deliveryMan
 local lastHunterSpawn = 1
@@ -69,12 +72,21 @@ function respawnAllPlayers()
 	end
 end
 
+function setUpDeliveryManStuff()
+	if (deliveryMan ~= nil) then
+		local checkpoint = checkPointCoords[currentCheckpoint]
+		addCheckpointBlip(checkpoint)
+	end
+end
+
 function newRound()
-	--destroyElement ( root )
+	destroyElementsByType ("marker")
+	destroyElementsByType ("vehicle")
 	deliveryCar = createDeliveryCar(getElementsByType ( "deliveryCar" , mapRoot )[1])
 	createCheckpoints()
 	createHunterJets()
 	respawnAllPlayers()
+	setUpDeliveryManStuff()
 end
 
 function startGame()
@@ -117,9 +129,26 @@ function startGameMap( startedMap )
 end
 addEventHandler("onGamemodeMapStart", getRootElement(), startGameMap)
 
+function markerHit( hitElement, matchingDimension ) 
+	outputDebugString("Marker hit")
+	local index = 1
+    for i,v in ipairs(checkPoints) do
+		if (checkPoints == hitElement) then
+			currentCheckpoint = index + 1
+			break
+		end
+		index = index + 1
+	end
+	destroyElement(currentCheckpointBlip)
+	currentCheckpointBlip = addCheckpointBlip(checkPoints[currentCheckpoint])
+end
+addEventHandler( "onMarkerHit", getRootElement(), markerHit )
+
 function createCheckpoints() 
+	currentCheckpoint = 1;
+	checkpoints = {}
 	for i,v in ipairs(checkPointCoords) do
-		createCheckPoint(v)
+		table.insert(checkpoints, createCheckPoint(v))
 	end
 end
 
@@ -130,20 +159,30 @@ function createHunterJets()
 	end
 end
 
+function addCheckpointBlip(checkpoint)
+	local x, y, z = getElementPosition ( checkpoint )
+	currentCheckpointBlip = createBlip ( x, y, z )
+	setElementVisibleTo ( currentCheckpointBlip, root, false )
+	setElementVisibleTo ( currentCheckpointBlip, deliveryMan, true )
+end
+
 function createCheckPoint(element)
-	local posX = getElementData ( element, "posX" )
-	local posY = getElementData ( element, "posY" )
-	local posZ = getElementData ( element, "posZ" )
+	local posX, posY, posZ = coordsFromEdl ( element )
 	local checkType = getElementData ( element, "type" )
 	local color = getElementData ( element, "color" )
 	local size = getElementData ( element, "size" )
 	return createMarker(posX, posY, posZ, checkType, size)
 end
 
-function createDeliveryCar(element)
+function coordsFromEdl(element)
 	local posX = getElementData ( element, "posX" )
 	local posY = getElementData ( element, "posY" )
 	local posZ = getElementData ( element, "posZ" )
+	return posX, posY, posZ
+end
+
+function createDeliveryCar(element)
+	local posX, posY, posZ = coordsFromEdl ( element )
 	local rotX = getElementData ( element, "rotX" )
 	local rotY = getElementData ( element, "rotY" )
 	local rotZ = getElementData ( element, "rotZ" )
@@ -153,9 +192,7 @@ function createDeliveryCar(element)
 end
 
 function createHunterJet(element)
-	local posX = getElementData ( element, "posX" )
-	local posY = getElementData ( element, "posY" )
-	local posZ = getElementData ( element, "posZ" )
+	local posX, posY, posZ = coordsFromEdl ( element )
 	local rotX = getElementData ( element, "rotX" )
 	local rotY = getElementData ( element, "rotY" )
 	local rotZ = getElementData ( element, "rotZ" )
@@ -168,6 +205,7 @@ function joinHandler()
 	
 	if(gameStarted and deliveryMan == nil) then
 		deliveryMan = source
+		setUpDeliveryManStuff()
 	end
 	spawn(source)
 	outputChatBox("Welcome to My Server", source)
