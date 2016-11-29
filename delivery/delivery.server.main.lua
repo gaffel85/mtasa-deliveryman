@@ -73,8 +73,11 @@ function respawnAllPlayers()
 end
 
 function setUpDeliveryManStuff()
+	if gameStarted then
+		outputDebugString("Game started ")
+	end
 	if (deliveryMan ~= nil) then
-		local checkpoint = checkPointCoords[currentCheckpoint]
+		local checkpoint = checkPoints[currentCheckpoint]
 		addCheckpointBlip(checkpoint)
 	end
 end
@@ -84,6 +87,7 @@ function newRound()
 	destroyElementsByType ("vehicle")
 	deliveryCar = createDeliveryCar(getElementsByType ( "deliveryCar" , mapRoot )[1])
 	createCheckpoints()
+	outputDebugString("New new  "..#checkPoints)
 	createHunterJets()
 	respawnAllPlayers()
 	setUpDeliveryManStuff()
@@ -121,6 +125,7 @@ function destroyElementsByType(elementType)
 end
 
 function startGameMap( startedMap )
+	outputDebugString("startGameMap")
 	local mapRoot = getResourceRootElement( startedMap ) 
     spawnPoints = getElementsByType ( "hunterSpawnpoint" , mapRoot )
 	checkPointCoords = getElementsByType ( "checkpoint" , mapRoot )
@@ -129,26 +134,31 @@ function startGameMap( startedMap )
 end
 addEventHandler("onGamemodeMapStart", getRootElement(), startGameMap)
 
-function markerHit( hitElement, matchingDimension ) 
-	outputDebugString("Marker hit")
+function markerHit( markerHit, matchingDimension ) 
+	if checkPoints == nil or deliveryMan ~= source then
+		return
+	end
+
 	local index = 1
     for i,v in ipairs(checkPoints) do
-		if (checkPoints == hitElement) then
+		if (v == markerHit) then
 			currentCheckpoint = index + 1
 			break
 		end
 		index = index + 1
 	end
-	destroyElement(currentCheckpointBlip)
-	currentCheckpointBlip = addCheckpointBlip(checkPoints[currentCheckpoint])
+	
+	if currentCheckpointBlip ~= nil then
+		destroyElement(currentCheckpointBlip)
+		addCheckpointBlip(checkPoints[currentCheckpoint])
+	end
 end
-addEventHandler( "onMarkerHit", getRootElement(), markerHit )
+addEventHandler( "onPlayerMarkerHit", getRootElement(), markerHit )
 
 function createCheckpoints() 
 	currentCheckpoint = 1;
-	checkpoints = {}
 	for i,v in ipairs(checkPointCoords) do
-		table.insert(checkpoints, createCheckPoint(v))
+		table.insert(checkPoints, createCheckPoint(v))
 	end
 end
 
