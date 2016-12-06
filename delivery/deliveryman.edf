@@ -12,6 +12,13 @@
 		<data name="color" type="color" required="false" default="#0000ffff" />
 		<marker type="!type!" size="!size!" color="!color!" />
 	</element>
+	<element name="goal" friendlyname="Delivery Goal">
+		<data name="position" type="coord3d" required="true" default="0,0,0" />
+		<data name="type" type="selection:checkpoint,ring" required="true" default="checkpoint" />
+		<data name="size" type="number" required="true" default="20.0"/>
+		<data name="color" type="color" required="false" default="#ff00ffff" />
+		<marker type="!type!" size="!size!" color="!color!" />
+	</element>
 	<element name="deliveryCar" friendlyname="Delivery Car">
 		<data name="position" type="coord3d" required="true" default="0,0,0" />
 		<data name="rotation" type="number" default="0" />
@@ -25,5 +32,12 @@
 		<data name="model" type="vehicleID" default="520" />
 		<data name="plate" type="plate" default="Hunter" />
 		<vehicle model="!model!" />
+	</element>
+	<element name="lobbyStart" friendlyname="Lobby ready zone">
+		<data name="position" type="coord3d" required="true" default="0,0,0" />
+		<data name="type" type="selection:checkpoint,ring" required="true" default="checkpoint" />
+		<data name="size" type="number" required="true" default="20.0"/>
+		<data name="color" type="color" required="false" default="#0000ffff" />
+		<marker type="!type!" size="!size!" color="!color!" />
 	</element>
 </def>
