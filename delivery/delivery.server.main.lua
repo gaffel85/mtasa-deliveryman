@@ -95,6 +95,7 @@ end
 
 function newRound()
 	destroyElementsByType ("marker")
+	destroyElementsByType ("blip")
 	destroyElementsByType ("vehicle")
 	deliveryCar = createDeliveryCar(getElementsByType ( "deliveryCar" , mapRoot )[1])
 	createCheckpoints()
@@ -154,20 +155,9 @@ function endRound( didFinish )
 	else
 		local deliveryManName = getPlayerName(deliveryMan)
 		local points = getElementData( deliveryMan, SCORE_KEY )
-		displayMessageForAll(END_ROUND_TEXT_ID, deliveryManName.." got "..points.." as delivery man", nil, nil, 10000)
-		setTimer( spawn, 5000, 1, source)
+		displayMessageForAll(END_ROUND_TEXT_ID, deliveryManName.." got "..points.." points as delivery man", nil, nil, 10000)
+		setTimer( prepareNewRound, 5000, 1)
 	end
-end
-
-function showRoundEndedText()
-	local players = getElementsByType ( "player" )
-	for k,v in ipairs(players) do
-		clearMessageForPlayer ( v, END_ROUND_TEXT_ID )
-		if(v ~= deliveryMan) then
-			displayMessageForPlayer ( v, WHOS_HUNTED_TEXT_ID, getPlayerName(theHuntedPlayer).." is "..itName, 999999, 0.5, 0.9, 255, 255, 255, 128, 2 )
-		end
-	end
-	displayMessageForPlayer ( theHuntedPlayer, WHOS_HUNTED_TEXT_ID, "You are "..itName.."!", 999999, 0.5, 0.9, 255, 255, 255, 128, 2 )
 end
 
 function gameFinished()
@@ -177,7 +167,7 @@ end
 function prepareNewRound()
 	chooseNewDeliveryMan()
 	if deliveryMan ~= nil then
-		
+		newRound()
 	else
 		gameFinished()	
 	end
@@ -189,6 +179,7 @@ function isEveryOneDone()
 end
 
 function chooseNewDeliveryMan()
+	local players = getElementsByType ( "player" )	
 	deliveryMan = nil
 	if isEveryOneDone() then
 		gameFinished()
@@ -247,6 +238,7 @@ end
 
 function createCheckpoints() 
 	currentCheckpoint = 1;
+	checkPoints = {}
 	for i,v in ipairs(checkPointCoords) do
 		table.insert(checkPoints, createCheckPoint(v))
 	end
