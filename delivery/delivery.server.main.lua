@@ -4,11 +4,16 @@ local checkPointCoords
 local checkPoints = {}
 local currentCheckpoint
 local currentCheckpointBlip
+local goalCord
+local goalCheckpoint
 local deliveryCar
 local deliveryMan
 local lastHunterSpawn = 1
+local roundActive = false
 local xMans = {}
 local gameStarted = false
+
+local END_ROUND_TEXT_ID = 1333
 
 function exitVehicle ( thePlayer, seat, jacked ) 
    if (thePlayer == deliveryMan) then 
@@ -87,22 +92,18 @@ function newRound()
 	destroyElementsByType ("vehicle")
 	deliveryCar = createDeliveryCar(getElementsByType ( "deliveryCar" , mapRoot )[1])
 	createCheckpoints()
+	goalCheckpoint = createCheckPoint(goalCoord)
 	outputDebugString("New new  "..#checkPoints)
 	createHunterJets()
 	respawnAllPlayers()
 	setUpDeliveryManStuff()
+	roundActive = true;
 end
 
 function startGame()
 	local players = getElementsByType ( "player" )
 	if (#players > 0) then
-		deliveryMan = nil
-		while (deliveryMan == nil) do
-			local candidate = players[math.random(1,#players)]
-			if (arrayExists(xMans, candidate) == false) then
-				deliveryMan = candidate;
-			end
-		end
+		chooseNewDeliveryMan()
 	end
 	gameStarted = true;
 end
@@ -129,13 +130,70 @@ function startGameMap( startedMap )
 	local mapRoot = getResourceRootElement( startedMap ) 
     spawnPoints = getElementsByType ( "hunterSpawnpoint" , mapRoot )
 	checkPointCoords = getElementsByType ( "checkpoint" , mapRoot )
+	goalCoord = getElementsByType ( "goal" , mapRoot )
 	startGame()
 	newRound()
 end
 addEventHandler("onGamemodeMapStart", getRootElement(), startGameMap)
 
+function endRound( didFinish )
+	table.insert(xMans, deliveryMan)
+	roundActive = false
+	if isEveryOneDone() then
+		gameFinished()
+	else
+		local deliveryManName = getPlayerName(deliveryMan)
+		local points = 
+		displayMessageForAll(END_ROUND_TEXT_ID, deliveryManName.." got "..
+		displayMessageForPlayer ( theHuntedPlayer, WHOS_HUNTED_TEXT_ID, "You are "..itName.."!", 999999, 0.5, 0.9, 255, 255, 255, 128, 2 )
+		setTimer( spawn, 5000, 1, source)
+	end
+end
+
+function showRoundEndedText()
+	local players = getElementsByType ( "player" )
+	for k,v in ipairs(players) do
+		clearMessageForPlayer ( v, END_ROUND_TEXT_ID )
+		if(v ~= deliveryMan) then
+			displayMessageForPlayer ( v, WHOS_HUNTED_TEXT_ID, getPlayerName(theHuntedPlayer).." is "..itName, 999999, 0.5, 0.9, 255, 255, 255, 128, 2 )
+		end
+	end
+	displayMessageForPlayer ( theHuntedPlayer, WHOS_HUNTED_TEXT_ID, "You are "..itName.."!", 999999, 0.5, 0.9, 255, 255, 255, 128, 2 )
+end
+
+function gameFinished()
+
+end
+
+function prepareNewRound()
+	chooseNewDeliveryMan()
+	if deliveryMan ~= nil then
+		
+	else
+		gameFinished()	
+	end
+end
+
+function isEveryOneDone()
+	return #xMans == #players
+end
+
+function chooseNewDeliveryMan
+	deliveryMan = nil
+	if isEveryOneDone() then
+		gameFinished()
+	else 
+		deliveryMan = players[#xMans + 1];
+	end
+end
+
 function markerHit( markerHit, matchingDimension ) 
 	if checkPoints == nil or deliveryMan ~= source then
+		return
+	end
+	
+	if markerHit = goalCheckpoint then
+		endRound()
 		return
 	end
 
@@ -154,6 +212,15 @@ function markerHit( markerHit, matchingDimension )
 	end
 end
 addEventHandler( "onPlayerMarkerHit", getRootElement(), markerHit )
+
+function playerDied( ammo, attacker, weapon, bodypart )	
+	if(source == deliveryMan) then
+		endRound()	
+	else
+		setTimer( spawn, 2000, 1, source)	
+	end
+end
+addEventHandler( "onPlayerWasted", getRootElement( ), playerDied)
 
 function createCheckpoints() 
 	currentCheckpoint = 1;
@@ -233,6 +300,17 @@ function nextRound ( sourcePlayer )
 	changeGamemodeMap (getRunningGamemodeMap ())
 end
 addCommandHandler ( "next", nextRound )
+
+function displayMessageForAll(textId, text, specialPlayer, specialText)
+	local players = getElementsByType ( "player" )
+	for k,v in ipairs(players) do
+		clearMessageForPlayer ( v, textId )
+		if(v ~= specialPlayer) then
+			displayMessageForPlayer ( v, textId, text, 999999, 0.5, 0.9, 255, 255, 255, 128, 2 )
+		end
+	end
+	displayMessageForPlayer ( specialPlayer, textId, specialText, 999999, 0.5, 0.9, 255, 255, 255, 128, 2 )
+end
 
 function displayMessageForPlayer ( player, ID, message, displayTime, posX, posY, r, g, b, alpha, scale )
 	assert ( player and ID and message )
