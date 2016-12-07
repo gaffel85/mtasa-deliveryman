@@ -14,6 +14,9 @@ local xMans = {}
 local gameStarted = false
 
 local END_ROUND_TEXT_ID = 1333
+local SCORE_KEY = "Score"
+
+scoreboardRes = getResourceFromName( "scoreboard" )
 
 function exitVehicle ( thePlayer, seat, jacked ) 
    if (thePlayer == deliveryMan) then 
@@ -102,6 +105,10 @@ end
 
 function startGame()
 	local players = getElementsByType ( "player" )
+	for k,v in ipairs(players) do
+		setElementData( v, SCORE_KEY , 0)
+	end
+	
 	if (#players > 0) then
 		chooseNewDeliveryMan()
 	end
@@ -196,6 +203,8 @@ function markerHit( markerHit, matchingDimension )
 		endRound()
 		return
 	end
+	
+	givePointsToDeliveryMan(1)
 
 	local index = 1
     for i,v in ipairs(checkPoints) do
@@ -205,6 +214,8 @@ function markerHit( markerHit, matchingDimension )
 		end
 		index = index + 1
 	end
+	
+	destroyElement(markerHit)
 	
 	if currentCheckpointBlip ~= nil then
 		destroyElement(currentCheckpointBlip)
@@ -221,6 +232,15 @@ function playerDied( ammo, attacker, weapon, bodypart )
 	end
 end
 addEventHandler( "onPlayerWasted", getRootElement( ), playerDied)
+
+function givePointsToDeliveryMan(points)
+	local score = getElementData( deliveryMan, SCORE_KEY )
+	if(score == false) then
+		score = 0
+	end
+	score = score + points
+	setElementData( deliveryMan, SCORE_KEY , score)
+end
 
 function createCheckpoints() 
 	currentCheckpoint = 1;
@@ -330,3 +350,13 @@ function clearMessageForPlayer ( player, ID )
 	assert ( player and ID )
 	call ( getResourceFromName ( "easytext" ), "clearMessageForPlayer", player, ID )
 end
+
+addEventHandler("onResourceStop",getResourceRootElement(getThisResource()),
+function()
+	call(scoreboardRes,"removeScoreboardColumn",SCORE_KEY)
+end )
+
+addEventHandler("onResourceStart",getResourceRootElement(getThisResource()),
+function()
+	call(scoreboardRes,"addScoreboardColumn",SCORE_KEY)
+end )
