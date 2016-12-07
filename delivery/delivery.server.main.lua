@@ -87,8 +87,11 @@ function setUpDeliveryManStuff()
 	if (deliveryMan ~= nil) then
 		local checkpoint = checkPoints[currentCheckpoint]
 		addCheckpointBlip(checkpoint)
+		setElementData( deliveryMan, SCORE_KEY , 0)
 	end
 end
+
+
 
 function newRound()
 	destroyElementsByType ("marker")
@@ -137,22 +140,21 @@ function startGameMap( startedMap )
 	local mapRoot = getResourceRootElement( startedMap ) 
     spawnPoints = getElementsByType ( "hunterSpawnpoint" , mapRoot )
 	checkPointCoords = getElementsByType ( "checkpoint" , mapRoot )
-	goalCoord = getElementsByType ( "goal" , mapRoot )
+	goalCoord = getElementsByType ( "goal" , mapRoot )[1]
 	startGame()
 	newRound()
 end
 addEventHandler("onGamemodeMapStart", getRootElement(), startGameMap)
 
 function endRound( didFinish )
-	table.insert(xMans, deliveryMan)
+	--table.insert(xMans, deliveryMan)
 	roundActive = false
 	if isEveryOneDone() then
 		gameFinished()
 	else
 		local deliveryManName = getPlayerName(deliveryMan)
-		local points = 
-		displayMessageForAll(END_ROUND_TEXT_ID, deliveryManName.." got "..
-		displayMessageForPlayer ( theHuntedPlayer, WHOS_HUNTED_TEXT_ID, "You are "..itName.."!", 999999, 0.5, 0.9, 255, 255, 255, 128, 2 )
+		local points = getElementData( deliveryMan, SCORE_KEY )
+		displayMessageForAll(END_ROUND_TEXT_ID, deliveryManName.." got "..points.." as delivery man", nil, nil, 10000)
 		setTimer( spawn, 5000, 1, source)
 	end
 end
@@ -182,10 +184,11 @@ function prepareNewRound()
 end
 
 function isEveryOneDone()
+	local players = getElementsByType ( "player" )
 	return #xMans == #players
 end
 
-function chooseNewDeliveryMan
+function chooseNewDeliveryMan()
 	deliveryMan = nil
 	if isEveryOneDone() then
 		gameFinished()
@@ -199,7 +202,7 @@ function markerHit( markerHit, matchingDimension )
 		return
 	end
 	
-	if markerHit = goalCheckpoint then
+	if markerHit == goalCheckpoint then
 		endRound()
 		return
 	end
@@ -321,15 +324,17 @@ function nextRound ( sourcePlayer )
 end
 addCommandHandler ( "next", nextRound )
 
-function displayMessageForAll(textId, text, specialPlayer, specialText)
+function displayMessageForAll(textId, text, specialPlayer, specialText, displayTime)
 	local players = getElementsByType ( "player" )
 	for k,v in ipairs(players) do
 		clearMessageForPlayer ( v, textId )
 		if(v ~= specialPlayer) then
-			displayMessageForPlayer ( v, textId, text, 999999, 0.5, 0.9, 255, 255, 255, 128, 2 )
+			displayMessageForPlayer ( v, textId, text, displayTime, 0.5, 0.9, 255, 255, 255, 128, 2 )
 		end
 	end
-	displayMessageForPlayer ( specialPlayer, textId, specialText, 999999, 0.5, 0.9, 255, 255, 255, 128, 2 )
+	if specialPlayer ~= nil and  specialText ~= nil then
+		displayMessageForPlayer ( specialPlayer, textId, specialText, displayTime, 0.5, 0.9, 255, 255, 255, 128, 2 )
+	end
 end
 
 function displayMessageForPlayer ( player, ID, message, displayTime, posX, posY, r, g, b, alpha, scale )
