@@ -5,6 +5,8 @@ local checkPoints = {}
 local currentCheckpoint
 local currentCheckpointBlip
 local goalCord
+local lobbyStartCoord
+local lobbyStartCheckpoint
 local goalCheckpoint
 local deliveryCar
 local deliveryMan
@@ -12,8 +14,12 @@ local lastHunterSpawn = 1
 local roundActive = false
 local xMans = {}
 local gameStarted = false
+local participants = {}
 
 local END_ROUND_TEXT_ID = 1333
+local PLAYER_READY_TEXT_ID = 1334
+local LEAVING_LOBBY_TEXT_ID = 1335
+local PRESENTING_DELIVERY_MAN_TEXT_ID = 1335
 local SCORE_KEY = "Score"
 
 scoreboardRes = getResourceFromName( "scoreboard" )
@@ -88,6 +94,8 @@ function setUpDeliveryManStuff()
 		local checkpoint = checkPoints[currentCheckpoint]
 		addCheckpointBlip(checkpoint)
 		setElementData( deliveryMan, SCORE_KEY , 0)
+		
+		displayMessageForAll(PRESENTING_DELIVERY_MAN_TEXT_ID, getPlayerName(deliveryMan).." is now the delivery man. KILL HIM!", nil, nil, 5000, 0.5, 0.3, 255, 0, 0 )
 	end
 end
 
@@ -143,20 +151,30 @@ function startGameMap( startedMap )
     spawnPoints = getElementsByType ( "hunterSpawnpoint" , mapRoot )
 	checkPointCoords = getElementsByType ( "checkpoint" , mapRoot )
 	goalCoord = getElementsByType ( "goal" , mapRoot )[1]
-	startGame()
-	newRound()
+	lobbyStartCoord = getElementsByType ( "lobbyStart" , mapRoot )[1]
+	startLobby()
 end
 addEventHandler("onGamemodeMapStart", getRootElement(), startGameMap)
 
+function startLobby()
+	lobbyStartCheckpoint = createCheckPoint(lobbyStartCoord)
+	createHunterJets()
+end
+
+function leaveLobby()
+	startGame()
+	newRound()
+end
+
 function endRound( didFinish )
-	--table.insert(xMans, deliveryMan)
+	table.insert(xMans, deliveryMan)
 	roundActive = false
 	if isEveryOneDone() then
 		gameFinished()
 	else
 		local deliveryManName = getPlayerName(deliveryMan)
 		local points = getElementData( deliveryMan, SCORE_KEY )
-		displayMessageForAll(END_ROUND_TEXT_ID, deliveryManName.." got "..points.." points as delivery man", nil, nil, 10000)
+		displayMessageForAll(END_ROUND_TEXT_ID, deliveryManName.." got "..points.." points as delivery man", nil, nil, 5000)
 		setTimer( prepareNewRound, 5000, 1)
 	end
 end
@@ -189,7 +207,27 @@ function chooseNewDeliveryMan()
 	end
 end
 
+function playerReady(player)
+	local players = getElementsByType ( "player" )	
+	if arrayExists(participants, player) == false then
+	
+		table.insert(participants, player)
+		clearMessageForAll(PLAYER_READY_TEXT_ID)
+		displayMessageForAll(PLAYER_READY_TEXT_ID, getPlayerName(player).." is ready", nil, nil, 5000, 0.5, 0.9)
+		
+		if #participants == #players then
+			displayMessageForAll(LEAVING_LOBBY_TEXT_ID, "Game will start in 5 sec", nil, nil, 5000, 0.5, 0.5, 88, 255, 120)
+			setTimer( leaveLobby, 5000, 1)
+		end
+	end
+end
+
 function markerHit( markerHit, matchingDimension ) 
+	if gameStarted == false and markerHit == lobbyStartCheckpoint then
+		playerReady(source)
+		return
+	end
+
 	if checkPoints == nil or deliveryMan ~= source then
 		return
 	end
@@ -331,16 +369,25 @@ function nextRound ( sourcePlayer )
 end
 addCommandHandler ( "next", nextRound )
 
-function displayMessageForAll(textId, text, specialPlayer, specialText, displayTime)
+function displayMessageForAll(textId, text, specialPlayer, specialText, displayTime, posX, posY, r, g, b, alpha, scale)
 	local players = getElementsByType ( "player" )
 	for k,v in ipairs(players) do
 		clearMessageForPlayer ( v, textId )
 		if(v ~= specialPlayer) then
-			displayMessageForPlayer ( v, textId, text, displayTime, 0.5, 0.9, 255, 255, 255, 128, 2 )
+			displayMessageForPlayer ( v, textId, text, displayTime, posX, posY, r, g, b, alpha, scale )
 		end
 	end
 	if specialPlayer ~= nil and  specialText ~= nil then
-		displayMessageForPlayer ( specialPlayer, textId, specialText, displayTime, 0.5, 0.9, 255, 255, 255, 128, 2 )
+		displayMessageForPlayer ( specialPlayer, textId, specialText, displayTime, posX, posY, r, g, b, alpha, scale )
+	end
+end
+
+function clearMessageForAll ( textID , exceptPlayer)
+	local players = getElementsByType ( "player" )
+	for k,v in ipairs(players) do
+		if(v ~= exceptPlayer) then
+			clearMessageForPlayer( v, textID)
+		end
 	end
 end
 
