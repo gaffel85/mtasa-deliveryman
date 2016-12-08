@@ -47,7 +47,7 @@ function spawn(thePlayer)
 		--deliveryCar = createVehicle ( 566, spawnX,spawnY,spawnZ )
 		outputDebugString("Will Spawn player")
 		
-        spawnPlayer(thePlayer, 0, 0, 0) 
+        spawnPlayer(thePlayer, 0, 0, 0, 0, 253) 
         if deliveryCar  then 
             outputDebugString("Will warp to car: "..getVehicleName(deliveryCar))
 			setTimer(warpPedIntoVehicle, 50, 1, thePlayer, deliveryCar) 
@@ -67,7 +67,7 @@ function spawn(thePlayer)
 			spawnX, spawnY, spawnZ = getNextHunterSpawn()
 		end
 		
-		spawnPlayer(thePlayer, spawnX, spawnY, spawnZ, 0, normalModel)
+		spawnPlayer(thePlayer, spawnX, spawnY, spawnZ, 0, 287)
 		fadeCamera(thePlayer, true)
 		setCameraTarget(thePlayer, thePlayer)
 	end
@@ -317,7 +317,6 @@ function joinHandler()
 	end
 	spawn(source)
 	outputChatBox("Welcome to My Server", source)
-	-- setElementModel ( source, normalModel )
 end
 addEventHandler("onPlayerJoin", getRootElement(), joinHandler)
 
