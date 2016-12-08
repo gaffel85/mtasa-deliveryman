@@ -103,6 +103,7 @@ function newRound()
 	outputDebugString("New new  "..#checkPoints)
 	createHunterJets()
 	respawnAllPlayers()
+	addPlayerBlips()
 	setUpDeliveryManStuff()
 	roundActive = true;
 end
@@ -248,6 +249,21 @@ function createHunterJets()
 	local elements = getElementsByType("hunterJetSpawn")
 	for i,v in ipairs(elements) do
 		createHunterJet(v)
+	end
+end
+
+function addPlayerBlips()
+	local players = getElementsByType ( "player" )
+	for k1,v1 in ipairs(players) do
+		local blip = nil
+		if v1 == deliveryMan then
+			blip = createBlipAttachedTo ( deliveryMan, 60 )
+			setElementVisibleTo ( blip, deliveryMan, false )
+		else 
+			blip = createBlipAttachedTo ( v1, 5 )
+			setElementVisibleTo ( blip, root, false )
+			setElementVisibleTo ( blip, deliveryMan, true )
+		end
 	end
 end
 
