@@ -1,12 +1,4 @@
 <map edf:definitions="delivery">
-    <deliveryCar id="deliveryCar (Bullet) (1)" plate="POSTNORD" model="541" posX="-2796.5" posY="145.5" posZ="6.9" rotX="0" rotY="0" rotZ="88"></deliveryCar>
-    <checkpoint id="checkpoint (1)" color="#0000FFFF" type="checkpoint" size="20" posX="-2807.19995" posY="-70.3" posZ="6.1" rotX="0" rotY="0" rotZ="0"></checkpoint>
-    <checkpoint id="checkpoint (2)" color="#0000FFFF" type="checkpoint" size="20" posX="-2873.8999" posY="-936.40002" posZ="51.2" rotX="0" rotY="0" rotZ="0"></checkpoint>
-    <checkpoint id="checkpoint (4)" color="#0000FFFF" type="checkpoint" size="20" alpha="255" interior="0" posX="-2933.80005" posY="-1517.30005" posZ="35.7" rotX="0" rotY="0" rotZ="0"></checkpoint>
-    <checkpoint id="checkpoint (5)" color="#0000FFFF" type="checkpoint" size="40" posX="-2536.1001" posY="-2191.3999" posZ="29" rotX="0" rotY="0" rotZ="0"></checkpoint>
-    <checkpoint id="checkpoint (6)" color="#0000FFFF" type="checkpoint" size="20" posX="-1133.69995" posY="-2858.8999" posZ="97.2" rotX="0" rotY="0" rotZ="0"></checkpoint>
-    <checkpoint id="checkpoint (7)" color="#0000FFFF" type="checkpoint" size="50" posX="-56.9" posY="-2799" posZ="76.5" rotX="0" rotY="0" rotZ="0"></checkpoint>
-    <checkpoint id="checkpoint (8)" color="#0000FFFF" type="checkpoint" size="40" posX="-215.5" posY="-1559.5" posZ="14.8" rotX="0" rotY="0" rotZ="0"></checkpoint>
     <hunterSpawnpoint id="hunterSpawnpoint (1)" skin="0" posX="-1346" posY="502.5" posZ="18.2" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
     <hunterSpawnpoint id="hunterSpawnpoint (2)" skin="0" alpha="255" interior="0" posX="-1347.30005" posY="502.5" posZ="18.2" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
     <hunterSpawnpoint id="hunterSpawnpoint (3)" skin="0" alpha="255" interior="0" posX="-1348.69995" posY="502.39999" posZ="18.2" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
@@ -23,7 +15,7 @@
     <hunterSpawnpoint id="hunterSpawnpoint (14)" skin="0" alpha="255" interior="0" posX="-1351.30005" posY="510.70001" posZ="18.2" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
     <hunterSpawnpoint id="hunterSpawnpoint (15)" skin="0" alpha="255" interior="0" posX="-1353.40002" posY="510.70001" posZ="18.2" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
     <hunterSpawnpoint id="hunterSpawnpoint (16)" skin="0" alpha="255" interior="0" posX="-1340.19922" posY="526.19922" posZ="0" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
-    <hunterJetSpawn id="hunterJetSpawn (Hydra) (2)" plate="HUNTER" model="520" alpha="255" interior="0" posX="-1417.09998" posY="494.60001" posZ="19.2" rotX="0" rotY="0" rotZ="270"></hunterJetSpawn>
+    <hunterJetSpawn id="hunterJetSpawn (Hydra) (2)" plate="HUNTER" model="520" alpha="255" interior="0" posX="-1417.09961" posY="494.59961" posZ="19.2" rotX="0" rotY="0" rotZ="270"></hunterJetSpawn>
     <hunterJetSpawn id="hunterJetSpawn (Hydra) (3)" plate="HUNTER" model="520" alpha="255" interior="0" posX="-1428.30005" posY="508" posZ="19.1" rotX="0" rotY="0" rotZ="270"></hunterJetSpawn>
     <hunterJetSpawn id="hunterJetSpawn (Hydra) (4)" plate="HUNTER" model="520" alpha="255" interior="0" posX="-1396.90002" posY="509.89999" posZ="19.1" rotX="0" rotY="0" rotZ="269.995"></hunterJetSpawn>
     <hunterJetSpawn id="hunterJetSpawn (Hydra) (5)" plate="HUNTER" model="520" alpha="255" interior="0" posX="-1364.19995" posY="509.89999" posZ="19.2" rotX="0" rotY="0" rotZ="269.995"></hunterJetSpawn>
@@ -32,5 +24,19 @@
     <hunterJetSpawn id="hunterJetSpawn (Hydra) (9)" plate="HUNTER" model="520" alpha="255" interior="0" posX="-1302.09998" posY="507.70001" posZ="19.2" rotX="0" rotY="0" rotZ="270"></hunterJetSpawn>
     <hunterJetSpawn id="hunterJetSpawn (Hydra) (11)" plate="HUNTER" model="520" posX="-1332.80005" posY="509.29999" posZ="19.2" rotX="0" rotY="0" rotZ="270"></hunterJetSpawn>
     <lobbyStart id="lobbyStart (1)" color="#0000FFFF" type="checkpoint" size="5" posX="-1285.30005" posY="508.39999" posZ="17.3" rotX="0" rotY="0" rotZ="0"></lobbyStart>
-    <goal id="goal (2)" color="#FF00FFFF" type="checkpoint" size="20" posX="-2709" posY="-69.3" posZ="3.3" rotX="0" rotY="0" rotZ="0"></goal>
+    <goal id="goal (1)" color="#FF00FFFF" type="checkpoint" size="20" posX="622.40002" posY="-1210" posZ="17.1" rotX="0" rotY="0" rotZ="0"></goal>
+    <deliveryCar id="deliveryCar (Bullet) (1)" plate="POSTNORD" model="541" posX="-1046.19995" posY="1543.09998" posZ="32.8" rotX="0" rotY="0" rotZ="130"></deliveryCar>
+    <checkpoint id="checkpoint (1)" color="#0000FFFF" type="checkpoint" size="20" posX="-1085.69995" posY="1344" posZ="29.1" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (3)" color="#0000FFFF" type="checkpoint" size="20" posX="-1264.30005" posY="967.40002" posZ="47.3" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (9)" color="#0000FFFF" type="checkpoint" size="20" posX="-1787.09998" posY="421.5" posZ="38.1" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (10)" color="#0000FFFF" type="checkpoint" size="6" posX="-1924.09998" posY="-191.89999" posZ="37.3" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (11)" color="#0000FFFF" type="checkpoint" size="20" posX="-2215.69995" posY="-341.39999" posZ="36.5" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (12)" color="#0000FFFF" type="checkpoint" size="20" posX="-2843.80005" posY="-575.29999" posZ="6.1" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (13)" color="#0000FFFF" type="checkpoint" size="20" posX="-2932.19995" posY="-1521.5" posZ="12.5" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (14)" color="#0000FFFF" type="checkpoint" size="30" posX="-2534.3999" posY="-2181.80005" posZ="29.4" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (15)" color="#0000FFFF" type="checkpoint" size="20" posX="-2038.80005" posY="-2637.8999" posZ="57" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (16)" color="#0000FFFF" type="checkpoint" size="20" posX="-1198.09998" posY="-2862.1001" posZ="66.9" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (17)" color="#0000FFFF" type="checkpoint" size="40" posX="-217" posY="-2849.19995" posZ="39.9" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (18)" color="#0000FFFF" type="checkpoint" size="20" posX="-287.79999" posY="-1700.09998" posZ="27.5" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (19)" color="#0000FFFF" type="checkpoint" size="40" posX="74.2" posY="-1289.80005" posZ="12.8" rotX="0" rotY="0" rotZ="0"></checkpoint>
 </map>

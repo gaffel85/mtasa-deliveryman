@@ -74,6 +74,7 @@ function spawn(thePlayer)
 		end
 		
 		spawnPlayer(thePlayer, spawnX, spawnY, spawnZ, 0, 287)
+		giveWeapon (thePlayer, 24 , 50, true )
 		fadeCamera(thePlayer, true)
 		setCameraTarget(thePlayer, thePlayer)
 	end
