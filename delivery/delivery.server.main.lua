@@ -10,6 +10,7 @@ local lobbyStartCheckpoint
 local goalCheckpoint
 local deliveryCar
 local deliveryMan
+local hunterBackups
 local lastHunterSpawn = 1
 local roundActive = false
 local xMans = {}
@@ -103,6 +104,7 @@ end
 
 
 function newRound()
+	hunterBackups = {}
 	destroyElementsByType ("marker")
 	destroyElementsByType ("blip")
 	destroyElementsByType ("vehicle")
