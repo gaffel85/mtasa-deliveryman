@@ -18,6 +18,7 @@ local gameStarted = false
 local participants = {}
 
 local END_ROUND_TEXT_ID = 1333
+local END_GAME_TEXT_ID = 1338
 local PLAYER_READY_TEXT_ID = 1334
 local LEAVING_LOBBY_TEXT_ID = 1335
 local PRESENTING_DELIVERY_MAN_TEXT_ID = 1335
@@ -25,8 +26,8 @@ local SCORE_KEY = "Score"
 
 scoreboardRes = getResourceFromName( "scoreboard" )
 
-function exitVehicle ( thePlayer, seat, jacked ) 
-   if (thePlayer == deliveryMan) then 
+function exitVehicle ( thePlayer, seat, jacked )
+   if (thePlayer == deliveryMan) then
       cancelEvent()
    end
 end
@@ -53,13 +54,13 @@ function spawn(thePlayer)
 	if (thePlayer == deliveryMan) then
 		--deliveryCar = createVehicle ( 566, spawnX,spawnY,spawnZ )
 		outputDebugString("Will Spawn player")
-		
-        spawnPlayer(thePlayer, 0, 0, 0, 0, 253) 
-        if deliveryCar  then 
+
+        spawnPlayer(thePlayer, 0, 0, 0, 0, 253)
+        if deliveryCar  then
             outputDebugString("Will warp to car: "..getVehicleName(deliveryCar))
-			setTimer(warpPedIntoVehicle, 50, 1, thePlayer, deliveryCar) 
-        end 
-		
+			setTimer(warpPedIntoVehicle, 50, 1, thePlayer, deliveryCar)
+        end
+
 
 		fadeCamera(thePlayer, true)
 		setCameraTarget(thePlayer, thePlayer)
@@ -73,7 +74,7 @@ function spawn(thePlayer)
 		else
 			spawnX, spawnY, spawnZ = getNextHunterSpawn()
 		end
-		
+
 		spawnPlayer(thePlayer, spawnX, spawnY, spawnZ, 0, 287)
 		giveWeapon (thePlayer, 24 , 50, true )
 		fadeCamera(thePlayer, true)
@@ -96,18 +97,21 @@ function setUpDeliveryManStuff()
 		local checkpoint = checkPoints[currentCheckpoint]
 		addCheckpointBlip(checkpoint)
 		setElementData( deliveryMan, SCORE_KEY , 0)
-		
+
 		displayMessageForAll(PRESENTING_DELIVERY_MAN_TEXT_ID, getPlayerName(deliveryMan).." is now the delivery man. KILL HIM!", nil, nil, 5000, 0.5, 0.3, 255, 0, 0 )
 	end
 end
 
 
+function cleanUpMap()
+  destroyElementsByType ("marker")
+	destroyElementsByType ("blip")
+	destroyElementsByType ("vehicle")
+end
 
 function newRound()
 	hunterBackups = {}
-	destroyElementsByType ("marker")
-	destroyElementsByType ("blip")
-	destroyElementsByType ("vehicle")
+	cleanUpMap();
 	deliveryCar = createDeliveryCar(getElementsByType ( "deliveryCar" , mapRoot )[1])
 	createCheckpoints()
 	goalCheckpoint = createCheckPoint(goalCoord)
@@ -120,11 +124,12 @@ function newRound()
 end
 
 function startGame()
+  xMans = {}
 	local players = getElementsByType ( "player" )
 	for k,v in ipairs(players) do
 		setElementData( v, SCORE_KEY , 0)
 	end
-	
+
 	if (#players > 0) then
 		chooseNewDeliveryMan()
 	end
@@ -150,7 +155,7 @@ end
 
 function startGameMap( startedMap )
 	outputDebugString("startGameMap")
-	local mapRoot = getResourceRootElement( startedMap ) 
+	local mapRoot = getResourceRootElement( startedMap )
     spawnPoints = getElementsByType ( "hunterSpawnpoint" , mapRoot )
 	checkPointCoords = getElementsByType ( "checkpoint" , mapRoot )
 	goalCoord = getElementsByType ( "goal" , mapRoot )[1]
@@ -183,7 +188,23 @@ function endRound( didFinish )
 end
 
 function gameFinished()
+  local maxScore;
+  local winner;
+  for k1,v1 in ipairs(players) do
+    local points = getElementData( v1, SCORE_KEY )
+    if (points > maxScore) {
+      winner = v1;
+      maxScore = points;
+    }
+  end
 
+  local winnerName = getPlayerName(winner)
+  displayMessageForAll(END_GAME_TEXT_ID, winnerName.." won with "..maxScore.."! New game will start in 60 sec.", nil, nil, 60000)
+  setTimer( prepareNewRound, 5000, 1)
+
+  cleanUpMap();
+  gameStarted = false;
+  respawnAllPlayers();
 end
 
 function prepareNewRound()
@@ -191,7 +212,7 @@ function prepareNewRound()
 	if deliveryMan ~= nil then
 		newRound()
 	else
-		gameFinished()	
+		gameFinished()
 	end
 end
 
@@ -201,23 +222,23 @@ function isEveryOneDone()
 end
 
 function chooseNewDeliveryMan()
-	local players = getElementsByType ( "player" )	
+	local players = getElementsByType ( "player" )
 	deliveryMan = nil
 	if isEveryOneDone() then
 		gameFinished()
-	else 
+	else
 		deliveryMan = players[#xMans + 1];
 	end
 end
 
 function playerReady(player)
-	local players = getElementsByType ( "player" )	
+	local players = getElementsByType ( "player" )
 	if arrayExists(participants, player) == false then
-	
+
 		table.insert(participants, player)
 		clearMessageForAll(PLAYER_READY_TEXT_ID)
 		displayMessageForAll(PLAYER_READY_TEXT_ID, getPlayerName(player).." is ready", nil, nil, 5000, 0.5, 0.9)
-		
+
 		if #participants == #players then
 			displayMessageForAll(LEAVING_LOBBY_TEXT_ID, "Game will start in 5 sec", nil, nil, 5000, 0.5, 0.5, 88, 255, 120)
 			setTimer( leaveLobby, 5000, 1)
@@ -225,7 +246,7 @@ function playerReady(player)
 	end
 end
 
-function markerHit( markerHit, matchingDimension ) 
+function markerHit( markerHit, matchingDimension )
 	if gameStarted == false and markerHit == lobbyStartCheckpoint then
 		playerReady(source)
 		return
@@ -234,12 +255,12 @@ function markerHit( markerHit, matchingDimension )
 	if checkPoints == nil or deliveryMan ~= source then
 		return
 	end
-	
+
 	if markerHit == goalCheckpoint then
 		endRound()
 		return
 	end
-	
+
 	givePointsToDeliveryMan(1)
 
 	local index = 1
@@ -250,9 +271,9 @@ function markerHit( markerHit, matchingDimension )
 		end
 		index = index + 1
 	end
-	
+
 	destroyElement(markerHit)
-	
+
 	if currentCheckpointBlip ~= nil then
 		destroyElement(currentCheckpointBlip)
 		addCheckpointBlip(checkPoints[currentCheckpoint])
@@ -260,11 +281,11 @@ function markerHit( markerHit, matchingDimension )
 end
 addEventHandler( "onPlayerMarkerHit", getRootElement(), markerHit )
 
-function playerDied( ammo, attacker, weapon, bodypart )	
+function playerDied( ammo, attacker, weapon, bodypart )
 	if(source == deliveryMan) then
-		endRound()	
+		endRound()
 	else
-		setTimer( spawn, 2000, 1, source)	
+		setTimer( spawn, 2000, 1, source)
 	end
 end
 addEventHandler( "onPlayerWasted", getRootElement( ), playerDied)
@@ -278,7 +299,7 @@ function givePointsToDeliveryMan(points)
 	setElementData( deliveryMan, SCORE_KEY , score)
 end
 
-function createCheckpoints() 
+function createCheckpoints()
 	currentCheckpoint = 1;
 	checkPoints = {}
 	for i,v in ipairs(checkPointCoords) do
@@ -300,7 +321,7 @@ function addPlayerBlips()
 		if v1 == deliveryMan then
 			blip = createBlipAttachedTo ( deliveryMan, 60 )
 			setElementVisibleTo ( blip, deliveryMan, false )
-		else 
+		else
 			blip = createBlipAttachedTo ( v1, 5 )
 			setElementVisibleTo ( blip, root, false )
 			setElementVisibleTo ( blip, deliveryMan, true )
@@ -351,7 +372,7 @@ function createHunterJet(element)
 end
 
 function joinHandler()
-	
+
 	if(gameStarted and deliveryMan == nil) then
 		deliveryMan = source
 		setUpDeliveryManStuff()
