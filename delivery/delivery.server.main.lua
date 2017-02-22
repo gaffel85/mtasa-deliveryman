@@ -16,6 +16,7 @@ local roundActive = false
 local xMans = {}
 local gameStarted = false
 local participants = {}
+local huntersInVehicle = {}
 
 local END_ROUND_TEXT_ID = 1333
 local END_GAME_TEXT_ID = 1338
@@ -32,6 +33,13 @@ function exitVehicle ( thePlayer, seat, jacked )
    end
 end
 addEventHandler ( "onVehicleStartExit", getRootElement(), exitVehicle)
+
+function enterVehicle ( thePlayer, seat, jacked ) -- when a player enters a vehicle
+    if ( thePlayer ~= deliveryMan) then
+      table.insert(huntersInVehicle, thePlayer)
+    end
+end
+addEventHandler ( "onVehicleEnter", getRootElement(), enterVehicle )
 
 function getNextHunterSpawn ()
 	local point = spawnPoints[lastHunterSpawn]
@@ -54,31 +62,38 @@ function spawn(thePlayer)
 	if (thePlayer == deliveryMan) then
 		--deliveryCar = createVehicle ( 566, spawnX,spawnY,spawnZ )
 		outputDebugString("Will Spawn player")
-
-        spawnPlayer(thePlayer, 0, 0, 0, 0, 253)
-        if deliveryCar  then
-            outputDebugString("Will warp to car: "..getVehicleName(deliveryCar))
+    spawnPlayer(thePlayer, 0, 0, 0, 0, 253)
+    if deliveryCar  then
+      outputDebugString("Will warp to car: "..getVehicleName(deliveryCar))
 			setTimer(warpPedIntoVehicle, 50, 1, thePlayer, deliveryCar)
-        end
-
+    end
 
 		fadeCamera(thePlayer, true)
 		setCameraTarget(thePlayer, thePlayer)
 	else
-		outputDebugString("Spawning hunter")
-		local spawnX, spawnY, spawnZ
-		if(spawnPoints == nil) then
-			spawnX = fallbackSpawnX
-			spawnY = fallbackSpawnY
-			spawnZ = fallbackSpawnZ
-		else
-			spawnX, spawnY, spawnZ = getNextHunterSpawn()
-		end
+    if arrayExists(huntersInVehicle, thePlayer) == true then
+      -- Respawn in hunter
+      local jet = createMovingHunterJet()
+      setTimer(warpPedIntoVehicle, 50, 1, thePlayer, jet)
+      setTimer(triggerClientEvent, 55, 1, thePlayer, "onHunterRespawn", thePlayer)
+      fadeCamera(thePlayer, true)
+  		setCameraTarget(thePlayer, thePlayer)
+    else
+  		outputDebugString("Spawning hunter")
+  		local spawnX, spawnY, spawnZ
+  		if(spawnPoints == nil) then
+  			spawnX = fallbackSpawnX
+  			spawnY = fallbackSpawnY
+  			spawnZ = fallbackSpawnZ
+  		else
+  			spawnX, spawnY, spawnZ = getNextHunterSpawn()
+  		end
 
-		spawnPlayer(thePlayer, spawnX, spawnY, spawnZ, 0, 287)
-		giveWeapon (thePlayer, 24 , 50, true )
-		fadeCamera(thePlayer, true)
-		setCameraTarget(thePlayer, thePlayer)
+  		spawnPlayer(thePlayer, spawnX, spawnY, spawnZ, 0, 287)
+  		giveWeapon (thePlayer, 24 , 50, true )
+  		fadeCamera(thePlayer, true)
+  		setCameraTarget(thePlayer, thePlayer)
+    end
 	end
 end
 
@@ -111,6 +126,7 @@ end
 
 function newRound()
 	hunterBackups = {}
+  huntersInVehicle = {}
 	cleanUpMap();
 	deliveryCar = createDeliveryCar(getElementsByType ( "deliveryCar" , mapRoot )[1])
 	createCheckpoints()
@@ -359,6 +375,15 @@ function createDeliveryCar(element)
 	local model = getElementData ( element, "model" )
 	local plate = getElementData ( element, "plate" )
 	return createVehicle(model, posX, posY, posZ, rotX, rotY, rotZ, plate)
+end
+
+function createMovingHunterJet()
+  local posX, posY, posZ = getElementPosition ( deliveryCar )
+  local rotX, rotY, rotZ = getElementRotation ( deliveryCar )
+  local velX, velY, velZ = getElementVelocity ( deliveryCar )
+  --local turnX, turnY, turnZ = getVehicleTurnVelocity ( deliveryCar )
+  local vechicle =  createVehicle(520, posX, posY, posZ, rotX, rotY, rotZ, plate)
+  setElementVelocity(vehicle, velX, velY, velZ);
 end
 
 function createHunterJet(element)

@@ -4,6 +4,7 @@
 	<include resource="votemanager"/>
 	<include resource="killmessages" />
 	<include resource="easytext" />
-	
+
 	<script src="delivery.server.main.lua" />
+  <script src="delivery.client.main.lua" type="client" />
 </meta>
