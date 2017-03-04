@@ -211,10 +211,10 @@ function gameFinished()
   local winner;
   for k1,v1 in ipairs(players) do
     local points = getElementData( v1, SCORE_KEY )
-    if (points > maxScore) {
+    if points > maxScore then
       winner = v1;
       maxScore = points;
-    }
+    end
   end
 
   local winnerName = getPlayerName(winner)
