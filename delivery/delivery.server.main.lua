@@ -74,10 +74,13 @@ function spawn(thePlayer)
     if arrayExists(huntersInVehicle, thePlayer) == true then
       -- Respawn in hunter
       local jet = createMovingHunterJet()
-      setTimer(warpPedIntoVehicle, 50, 1, thePlayer, jet)
-      setTimer(triggerClientEvent, 55, 1, thePlayer, "onHunterRespawn", thePlayer)
-      fadeCamera(thePlayer, true)
-  		setCameraTarget(thePlayer, thePlayer)
+      setTimer(function() {
+        warpPedIntoVehicle(thePlayer, jet)
+        triggerClientEvent(thePlayer, "onHunterRespawn", thePlayer)
+        fadeCamera(thePlayer, true)
+        setCameraTarget(thePlayer, thePlayer)
+      }, 50, 1)
+
     else
   		outputDebugString("Spawning hunter")
   		local spawnX, spawnY, spawnZ
