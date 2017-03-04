@@ -22,6 +22,7 @@ end
 
 function missileFierd ()
   var now = os.clock();
+  outputChatBox("Missile fired " + now);
 
   -- Remove old rockets from history
   if #rocketsFired >= magSize then
@@ -43,10 +44,10 @@ function missileFierd ()
   if #rocketsFired >= magSize then
     disableFireForHydra(true);
     var reloadTime = os.clock() - rocketsFired[0];
-    setTimer(function() {
+    setTimer(function() 
       table.remove(rocketsFired, 0)
       disableFireForHydra(false);
-    }, reloadTime * 10, 1)
+    end, reloadTime * 10, 1)
   end
 end
 
