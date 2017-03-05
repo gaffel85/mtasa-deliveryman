@@ -1,0 +1,13 @@
+<map edf:definitions="delivery">
+    <checkpoint id="checkpoint (1)" color="#0000FFFF" type="checkpoint" size="20" posX="1957.4" posY="-2493.6001" posZ="12.6" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (2)" color="#0000FFFF" type="checkpoint" size="20" posX="1818.4" posY="-2493.2" posZ="28.6" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <deliveryCar id="deliveryCar (Bullet) (1)" plate="POSTNORD" model="541" posX="2013.1" posY="-2486.8" posZ="19.4" rotX="0" rotY="0" rotZ="86"></deliveryCar>
+    <goal id="goal (1)" color="#FF00FFFF" type="checkpoint" size="20" posX="1715.9" posY="-2493.3" posZ="12.6" rotX="0" rotY="0" rotZ="0"></goal>
+    <hunterJetSpawn id="hunterJetSpawn (Hydra) (1)" plate="HUNTER" model="520" posX="1844.3" posY="-2590" posZ="14.5" rotX="0" rotY="0" rotZ="0"></hunterJetSpawn>
+    <hunterJetSpawn id="hunterJetSpawn (Hydra) (2)" plate="HUNTER" model="520" posX="1819.2" posY="-2590.3" posZ="14.5" rotX="0" rotY="0" rotZ="0"></hunterJetSpawn>
+    <hunterJetSpawn id="hunterJetSpawn (Hydra) (3)" plate="HUNTER" model="520" posX="1884.5" posY="-2589.8" posZ="14.5" rotX="0" rotY="0" rotZ="0"></hunterJetSpawn>
+    <hunterSpawnpoint id="hunterSpawnpoint (1)" skin="0" posX="1815.9" posY="-2585.5" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (2)" skin="0" posX="1839.9" posY="-2586.2" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (3)" skin="0" posX="1878.5" posY="-2586.8999" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <lobbyStart id="lobbyStart (1)" color="#0000FFFF" type="checkpoint" size="20" posX="1842.3" posY="-2566.3999" posZ="12.6" rotX="0" rotY="0" rotZ="0"></lobbyStart>
+</map>

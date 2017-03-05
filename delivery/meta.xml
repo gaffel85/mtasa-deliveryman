@@ -6,5 +6,5 @@
 	<include resource="easytext" />
 
 	<script src="delivery.server.main.lua" />
-  <script src="delivery.client.main.lua" type="client" />
+    <script src="delivery.client.main.lua" type="client" />
 </meta>

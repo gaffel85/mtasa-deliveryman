@@ -9,14 +9,15 @@ local lobbyStartCoord
 local lobbyStartCheckpoint
 local goalCheckpoint
 local deliveryCar
+local lastHunter
 local deliveryMan
-local hunterBackups
 local lastHunterSpawn = 1
 local roundActive = false
 local xMans = {}
 local gameStarted = false
 local participants = {}
 local huntersInVehicle = {}
+local hunterBackups = {}
 
 local END_ROUND_TEXT_ID = 1333
 local END_GAME_TEXT_ID = 1338
@@ -73,7 +74,8 @@ function spawn(thePlayer)
 	else
     if arrayExists(huntersInVehicle, thePlayer) == true then
       -- Respawn in hunter
-      local jet = createMovingHunterJet()
+      local jet = createMovingHunterJet(thePlayer)
+	  spawnPlayer(thePlayer, 0, 0, 0, 0, 287)
       setTimer(function() 
         warpPedIntoVehicle(thePlayer, jet)
         triggerClientEvent(thePlayer, "onHunterRespawn", thePlayer)
@@ -129,7 +131,7 @@ end
 
 function newRound()
 	hunterBackups = {}
-  huntersInVehicle = {}
+    huntersInVehicle = {}
 	cleanUpMap();
 	deliveryCar = createDeliveryCar(getElementsByType ( "deliveryCar" , mapRoot )[1])
 	createCheckpoints()
@@ -207,8 +209,9 @@ function endRound( didFinish )
 end
 
 function gameFinished()
-  local maxScore;
+  local maxScore = 0;
   local winner;
+  local players = getElementsByType ( "player" )
   for k1,v1 in ipairs(players) do
     local points = getElementData( v1, SCORE_KEY )
     if points > maxScore then
@@ -329,7 +332,7 @@ end
 function createHunterJets()
 	local elements = getElementsByType("hunterJetSpawn")
 	for i,v in ipairs(elements) do
-		createHunterJet(v)
+		lastHunter = createHunterJet(v)
 	end
 end
 
@@ -380,13 +383,29 @@ function createDeliveryCar(element)
 	return createVehicle(model, posX, posY, posZ, rotX, rotY, rotZ, plate)
 end
 
-function createMovingHunterJet()
-  local posX, posY, posZ = getElementPosition ( deliveryCar )
-  local rotX, rotY, rotZ = getElementRotation ( deliveryCar )
-  local velX, velY, velZ = getElementVelocity ( deliveryCar )
-  --local turnX, turnY, turnZ = getVehicleTurnVelocity ( deliveryCar )
-  local vechicle =  createVehicle(520, posX, posY, posZ, rotX, rotY, rotZ, plate)
-  setElementVelocity(vehicle, velX, velY, velZ);
+function createMovingHunterJet(player)
+	local playerBackups = hunterBackups[player];
+	outputDebugString("1-Player backups: " .. #playerBackups .. " " .. #hunterBackups[player])
+	if playerBackups ~= nil and #playerBackups > 0 then
+		for i,v in ipairs(playerBackups) do
+			outputDebugString("[ " .. i .. "] " .. #v)
+		end
+		local b = playerBackups[0]
+		local vehicle =  createVehicle(520, b.posX, b.posY, b.posZ, b.rotX, b.rotY, b.rotZ, "Hunter")
+		setElementVelocity(vehicle, b.velX, b.velY, b.velZ);
+		setVehicleTurnVelocity(vehicle, b.turnX, b.turnY, b.turnZ)
+		return vehicle
+	else 
+		local posVehicle = lastHunter
+		local posX, posY, posZ = getElementPosition ( posVehicle )
+		posZ = 1000
+		local rotX, rotY, rotZ = getElementRotation ( posVehicle )
+		local velX, velY, velZ = getElementVelocity ( posVehicle )
+		--local turnX, turnY, turnZ = getVehicleTurnVelocity ( posVehicle ) 
+		local vehicle =  createVehicle(520, posX, posY, posZ, rotX, rotY, rotZ, plate)
+		setElementVelocity(vehicle, velX, velY, velZ);
+		return vehicle
+	end
 end
 
 function createHunterJet(element)
@@ -399,6 +418,55 @@ function createHunterJet(element)
 	return createVehicle(model, posX, posY, posZ, rotX, rotY, rotZ, plate)
 end
 
+local maxBackups = 3
+function saveHunterBackups()
+	for i,v in ipairs(huntersInVehicle) do
+		if huntersInVehicle ~= nil then
+			local posVehicle = getPedOccupiedVehicle(v)
+			if posVehicle ~= nil then
+				local posX, posY, posZ = getElementPosition ( posVehicle )
+				local rotX, rotY, rotZ = getElementRotation ( posVehicle )
+				local velX, velY, velZ = getElementVelocity ( posVehicle )
+				local turnX, turnY, turnZ = getVehicleTurnVelocity ( posVehicle )
+				
+				local playerBackups = hunterBackups[v];
+				if playerBackups == nil then
+					playerBackups = {};
+					hunterBackups[v] = playerBackups;
+				else 
+					outputDebugString("Player backups: " .. #playerBackups)
+				end
+				
+				local backup = {posX = posX, posY = posY, posZ = pozZ, rotX = rotX, rotY = rotY, rotZ = rotZ, velX = velX, velY = velY, velZ = velZ, turnX = turnX, turnY = turnY, turnZ = turnZ}
+				local test = {}
+				test["ola"] = "gawell"
+				for key, val in ipairs(test) do
+					outputDebugString("[" .. key .. "] " .. val)
+				end
+				
+				local test1 = {["julia"] = "persson"}
+				for key, val in ipairs(test1) do
+					outputDebugString("[" .. key .. "] " .. val)
+				end
+				
+				local test2 = {["posX"] = posX}
+				for key, val in ipairs(test2) do
+					outputDebugString("[" .. key .. "] " .. val)
+				end
+				table.insert(playerBackups, backup)
+				
+				if #playerBackups > maxBackups then
+					table.remove(playerBackups, 0)
+					outputDebugString("Removing old backups ")
+				end
+				
+				outputDebugString("Player backups: " .. #playerBackups .. " " .. #hunterBackups[v])
+				outputDebugString("All backups: " .. #hunterBackups)
+			end
+		end
+	end
+end
+
 function joinHandler()
 
 	if(gameStarted and deliveryMan == nil) then
@@ -409,6 +477,21 @@ function joinHandler()
 	outputChatBox("Welcome to My Server", source)
 end
 addEventHandler("onPlayerJoin", getRootElement(), joinHandler)
+
+function quitPlayer ( quitType )
+
+	local i=1
+	while i <= #huntersInVehicle do
+		if huntersInVehicle[i] == v then
+			table.remove(huntersInVehicle, i)
+			outputDebugString("Remove hunter in vehicle")
+		else
+			i = i + 1
+		end
+	end
+	outputChatBox ( getPlayerName(source).. " has left the server (" .. quitType .. ")" )
+end
+addEventHandler ( "onPlayerQuit", getRootElement(), quitPlayer )
 
 function commitSuicide ( sourcePlayer )
 	-- kill the player and make him responsible for it
@@ -470,4 +553,5 @@ end )
 addEventHandler("onResourceStart",getResourceRootElement(getThisResource()),
 function()
 	call(scoreboardRes,"addScoreboardColumn",SCORE_KEY)
+	setTimer(saveHunterBackups, 5000, 999999999)
 end )
