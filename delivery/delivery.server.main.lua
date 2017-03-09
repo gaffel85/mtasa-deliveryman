@@ -18,12 +18,15 @@ local gameStarted = false
 local participants = {}
 local huntersInVehicle = {}
 local hunterBackups = {}
+local deliveryManLatestDistance = {}
+local POINT_GIVING_DIST = 100
 
 local END_ROUND_TEXT_ID = 1333
 local END_GAME_TEXT_ID = 1338
 local PLAYER_READY_TEXT_ID = 1334
 local LEAVING_LOBBY_TEXT_ID = 1335
 local PRESENTING_DELIVERY_MAN_TEXT_ID = 1335
+local GOT_SCORE_TEXT_KEY = 1336
 local SCORE_KEY = "Score"
 
 scoreboardRes = getResourceFromName( "scoreboard" )
@@ -76,7 +79,7 @@ function spawn(thePlayer)
       -- Respawn in hunter
       local jet = createMovingHunterJet(thePlayer)
 	  spawnPlayer(thePlayer, 0, 0, 0, 0, 287)
-      setTimer(function() 
+      setTimer(function()
         warpPedIntoVehicle(thePlayer, jet)
         triggerClientEvent(thePlayer, "onHunterRespawn", thePlayer)
         fadeCamera(thePlayer, true)
@@ -283,7 +286,7 @@ function markerHit( markerHit, matchingDimension )
 		return
 	end
 
-	givePointsToDeliveryMan(1)
+	--givePointsToDeliveryMan(1)
 
 	local index = 1
     for i,v in ipairs(checkPoints) do
@@ -319,6 +322,25 @@ function givePointsToDeliveryMan(points)
 	end
 	score = score + points
 	setElementData( deliveryMan, SCORE_KEY , score)
+end
+
+function givePointsToDeliveryManBasedOnDistance()
+  if deliveryMan then
+    local distToGoal = distanceToGoal (deliveryMan)
+    local scoreGivingDist = math.ceil(distToGoal / POINT_GIVING_DIST)
+    if (scoreGivingDist < deliveryManLatestDistance) then
+      givePointsToDeliveryMan(1)
+      displayMessageForAll(GOT_SCORE_TEXT_KEY, getPlayerName(deliveryMan).." got 1 point for getting closer to the goal!", nil, nil, 5000, 0.5, 0.9, 0, 255, 0 )
+      deliveryManLatestDistance = scoreGivingDist
+    end
+  end
+end
+
+function distanceToGoal(player)
+  local px, px, pz = getElementPosition(player)
+  local gx, gx, gz = getElementPosition(goalCheckpoint)
+  local dist = math.sqrt(math.pow(gx-px, 2) + math.pow(gy-py, 2) + math.pow(gz-pz, 2))
+  return dist
 end
 
 function createCheckpoints()
@@ -395,13 +417,13 @@ function createMovingHunterJet(player)
 		setElementVelocity(vehicle, b.velX, b.velY, b.velZ);
 		setVehicleTurnVelocity(vehicle, b.turnX, b.turnY, b.turnZ)
 		return vehicle
-	else 
+	else
 		local posVehicle = lastHunter
 		local posX, posY, posZ = getElementPosition ( posVehicle )
 		posZ = 1000
 		local rotX, rotY, rotZ = getElementRotation ( posVehicle )
 		local velX, velY, velZ = getElementVelocity ( posVehicle )
-		--local turnX, turnY, turnZ = getVehicleTurnVelocity ( posVehicle ) 
+		--local turnX, turnY, turnZ = getVehicleTurnVelocity ( posVehicle )
 		local vehicle =  createVehicle(520, posX, posY, posZ, rotX, rotY, rotZ, plate)
 		setElementVelocity(vehicle, velX, velY, velZ);
 		return vehicle
@@ -428,38 +450,38 @@ function saveHunterBackups()
 				local rotX, rotY, rotZ = getElementRotation ( posVehicle )
 				local velX, velY, velZ = getElementVelocity ( posVehicle )
 				local turnX, turnY, turnZ = getVehicleTurnVelocity ( posVehicle )
-				
+
 				local playerBackups = hunterBackups[v];
 				if playerBackups == nil then
 					playerBackups = {};
 					hunterBackups[v] = playerBackups;
-				else 
+				else
 					outputDebugString("Player backups: " .. #playerBackups)
 				end
-				
+
 				local backup = {posX = posX, posY = posY, posZ = pozZ, rotX = rotX, rotY = rotY, rotZ = rotZ, velX = velX, velY = velY, velZ = velZ, turnX = turnX, turnY = turnY, turnZ = turnZ}
 				local test = {}
 				test["ola"] = "gawell"
 				for key, val in ipairs(test) do
 					outputDebugString("[" .. key .. "] " .. val)
 				end
-				
+
 				local test1 = {["julia"] = "persson"}
 				for key, val in ipairs(test1) do
 					outputDebugString("[" .. key .. "] " .. val)
 				end
-				
+
 				local test2 = {["posX"] = posX}
 				for key, val in ipairs(test2) do
 					outputDebugString("[" .. key .. "] " .. val)
 				end
 				table.insert(playerBackups, backup)
-				
+
 				if #playerBackups > maxBackups then
 					table.remove(playerBackups, 0)
 					outputDebugString("Removing old backups ")
 				end
-				
+
 				outputDebugString("Player backups: " .. #playerBackups .. " " .. #hunterBackups[v])
 				outputDebugString("All backups: " .. #hunterBackups)
 			end
@@ -553,5 +575,6 @@ end )
 addEventHandler("onResourceStart",getResourceRootElement(getThisResource()),
 function()
 	call(scoreboardRes,"addScoreboardColumn",SCORE_KEY)
-	setTimer(saveHunterBackups, 5000, 999999999)
+	--setTimer(saveHunterBackups, 5000, 999999999)
+  setTimer(givePointsToDeliveryManBasedOnDistance, 5000, 999999999)
 end )
