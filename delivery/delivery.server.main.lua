@@ -386,17 +386,14 @@ end
 function createMovingHunterJet(player)
 	local playerBackups = hunterBackups[player];
 	outputDebugString("1-Player backups: " .. #playerBackups .. " " .. #hunterBackups[player])
-	if playerBackups ~= nil and #playerBackups > 0 then
-		for i,v in ipairs(playerBackups) do
-			outputDebugString("[ " .. i .. "] " .. #v)
-		end
-		local b = playerBackups[0]
+	if false then --if playerBackups ~= nil and #playerBackups > 0 then
+		local b = playerBackups[1]
 		local vehicle =  createVehicle(520, b.posX, b.posY, b.posZ, b.rotX, b.rotY, b.rotZ, "Hunter")
 		setElementVelocity(vehicle, b.velX, b.velY, b.velZ);
 		setVehicleTurnVelocity(vehicle, b.turnX, b.turnY, b.turnZ)
 		return vehicle
 	else 
-		local posVehicle = lastHunter
+		local posVehicle = deliveryCar
 		local posX, posY, posZ = getElementPosition ( posVehicle )
 		posZ = 1000
 		local rotX, rotY, rotZ = getElementRotation ( posVehicle )
@@ -438,25 +435,11 @@ function saveHunterBackups()
 				end
 				
 				local backup = {posX = posX, posY = posY, posZ = pozZ, rotX = rotX, rotY = rotY, rotZ = rotZ, velX = velX, velY = velY, velZ = velZ, turnX = turnX, turnY = turnY, turnZ = turnZ}
-				local test = {}
-				test["ola"] = "gawell"
-				for key, val in ipairs(test) do
-					outputDebugString("[" .. key .. "] " .. val)
-				end
-				
-				local test1 = {["julia"] = "persson"}
-				for key, val in ipairs(test1) do
-					outputDebugString("[" .. key .. "] " .. val)
-				end
-				
-				local test2 = {["posX"] = posX}
-				for key, val in ipairs(test2) do
-					outputDebugString("[" .. key .. "] " .. val)
-				end
+				outputDebugString("PosX : " .. backup.posX)
 				table.insert(playerBackups, backup)
 				
 				if #playerBackups > maxBackups then
-					table.remove(playerBackups, 0)
+					table.remove(playerBackups, 1)
 					outputDebugString("Removing old backups ")
 				end
 				
