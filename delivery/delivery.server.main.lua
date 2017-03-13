@@ -434,8 +434,7 @@ function saveHunterBackups()
 					outputDebugString("Player backups: " .. #playerBackups)
 				end
 				
-				local backup = {posX = posX, posY = posY, posZ = pozZ, rotX = rotX, rotY = rotY, rotZ = rotZ, velX = velX, velY = velY, velZ = velZ, turnX = turnX, turnY = turnY, turnZ = turnZ}
-				outputDebugString("PosX : " .. backup.posX)
+				local backup = {posX = posX, posY = posY, posZ = posZ, rotX = rotX, rotY = rotY, rotZ = rotZ, velX = velX, velY = velY, velZ = velZ, turnX = turnX, turnY = turnY, turnZ = turnZ}
 				table.insert(playerBackups, backup)
 				
 				if #playerBackups > maxBackups then
