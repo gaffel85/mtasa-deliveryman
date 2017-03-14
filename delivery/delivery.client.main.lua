@@ -1,6 +1,8 @@
-
-function remotePlayerJoin()
-	outputChatBox("* " .. getPlayerName(source) .. " has joined the server")
-	outputConsole("Testar");
+function setThrustersEventHandler ()
+     local theVehicle = getPedOccupiedVehicle ( getLocalPlayer() )
+     if (theVehicle and getElementModel(theVehicle) == 520) then
+       setVehicleAdjustableProperty ( theVehicle, 255 )
+     end
 end
-addEventHandler("onClientPlayerJoin", getRootElement(), remotePlayerJoin)
+addEvent( "onHunterRespawn", true )
+addEventHandler( "onHunterRespawn", localPlayer, setThrustersEventHandler )
