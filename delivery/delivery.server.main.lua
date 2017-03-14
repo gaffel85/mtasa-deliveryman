@@ -18,7 +18,7 @@ local gameStarted = false
 local participants = {}
 local huntersInVehicle = {}
 local hunterBackups = {}
-local deliveryManLatestDistance = {}
+local deliveryManLatestDistance = 999999999
 local POINT_GIVING_DIST = 100
 
 local END_ROUND_TEXT_ID = 1333
@@ -63,30 +63,43 @@ function getDeliveryManSpawnPoint ()
 end
 
 function spawn(thePlayer)
+  outputDebugString("4")
 	if (thePlayer == deliveryMan) then
 		--deliveryCar = createVehicle ( 566, spawnX,spawnY,spawnZ )
 		outputDebugString("Will Spawn player")
     spawnPlayer(thePlayer, 0, 0, 0, 0, 253)
     if deliveryCar  then
       outputDebugString("Will warp to car: "..getVehicleName(deliveryCar))
-			setTimer(warpPedIntoVehicle, 50, 1, thePlayer, deliveryCar)
-    end
-
-		fadeCamera(thePlayer, true)
-		setCameraTarget(thePlayer, thePlayer)
-	else
-    if arrayExists(huntersInVehicle, thePlayer) == true then
-      -- Respawn in hunter
-      local jet = createMovingHunterJet(thePlayer)
-	  spawnPlayer(thePlayer, 0, 0, 0, 0, 287)
-      setTimer(function()
-        warpPedIntoVehicle(thePlayer, jet)
-        triggerClientEvent(thePlayer, "onHunterRespawn", thePlayer)
+			setTimer(function()
+        warpPedIntoVehicle(thePlayer, deliveryCar)
         fadeCamera(thePlayer, true)
         setCameraTarget(thePlayer, thePlayer)
       end, 50, 1)
+    end
 
-    else
+
+	else
+    outputDebugString("5")
+    if arrayExists(huntersInVehicle, thePlayer) == true then
+      -- Respawn in hunter
+      outputDebugString("6")
+      local jet = createMovingHunterJet(thePlayer)
+      setVehicleLandingGearDown ( jet, false )
+      if jet then
+        outputDebugString("7")
+	       spawnPlayer(thePlayer, 0, 0, 0, 0, 287)
+         setTimer(function()
+           warpPedIntoVehicle(thePlayer, jet)
+           triggerClientEvent(thePlayer, "onHunterRespawn", thePlayer, 5000)
+
+           fadeCamera(thePlayer, true)
+           setCameraTarget(thePlayer, thePlayer)
+         end, 50, 1)
+         return
+       end
+    end
+
+  outputDebugString("8")
   		outputDebugString("Spawning hunter")
   		local spawnX, spawnY, spawnZ
   		if(spawnPoints == nil) then
@@ -96,12 +109,11 @@ function spawn(thePlayer)
   		else
   			spawnX, spawnY, spawnZ = getNextHunterSpawn()
   		end
-
+  outputDebugString("9")
   		spawnPlayer(thePlayer, spawnX, spawnY, spawnZ, 0, 287)
   		giveWeapon (thePlayer, 24 , 50, true )
   		fadeCamera(thePlayer, true)
   		setCameraTarget(thePlayer, thePlayer)
-    end
 	end
 end
 
@@ -184,7 +196,9 @@ function startGameMap( startedMap )
 	checkPointCoords = getElementsByType ( "checkpoint" , mapRoot )
 	goalCoord = getElementsByType ( "goal" , mapRoot )[1]
 	lobbyStartCoord = getElementsByType ( "lobbyStart" , mapRoot )[1]
+  cleanUpMap()
 	startLobby()
+  respawnAllPlayers()
 end
 addEventHandler("onGamemodeMapStart", getRootElement(), startGameMap)
 
@@ -226,6 +240,8 @@ function gameFinished()
   local winnerName = getPlayerName(winner)
   displayMessageForAll(END_GAME_TEXT_ID, winnerName.." won with "..maxScore.."! New game will start in 60 sec.", nil, nil, 60000)
   setTimer( prepareNewRound, 5000, 1)
+
+FIxa reset av allt
 
   cleanUpMap();
   gameStarted = false;
@@ -298,10 +314,16 @@ function markerHit( markerHit, matchingDimension )
 	end
 
 	destroyElement(markerHit)
+  local nextCheckpoint = nil
+  if currentCheckpoint > #checkPoints then
+    nextCheckpoint = goalCheckpoint
+  else
+    nextCheckpoint = checkPoints[currentCheckpoint]
+  end
 
 	if currentCheckpointBlip ~= nil then
 		destroyElement(currentCheckpointBlip)
-		addCheckpointBlip(checkPoints[currentCheckpoint])
+		addCheckpointBlip(nextCheckpoint)
 	end
 end
 addEventHandler( "onPlayerMarkerHit", getRootElement(), markerHit )
@@ -337,8 +359,12 @@ function givePointsToDeliveryManBasedOnDistance()
 end
 
 function distanceToGoal(player)
-  local px, px, pz = getElementPosition(player)
-  local gx, gx, gz = getElementPosition(goalCheckpoint)
+  if not player or not goalCheckpoint then
+    return 0
+  end
+
+  local px, py, pz = getElementPosition(player)
+  local gx, gy, gz = getElementPosition(goalCheckpoint)
   local dist = math.sqrt(math.pow(gx-px, 2) + math.pow(gy-py, 2) + math.pow(gz-pz, 2))
   return dist
 end
@@ -406,15 +432,19 @@ function createDeliveryCar(element)
 end
 
 function createMovingHunterJet(player)
+  outputDebugString("1")
 	local playerBackups = hunterBackups[player];
-	outputDebugString("1-Player backups: " .. #playerBackups .. " " .. #hunterBackups[player])
-	if false then --if playerBackups ~= nil and #playerBackups > 0 then
+	if playerBackups ~= nil and #playerBackups > 0 then
+    outputDebugString("2")
 		local b = playerBackups[1]
 		local vehicle =  createVehicle(520, b.posX, b.posY, b.posZ, b.rotX, b.rotY, b.rotZ, "Hunter")
-		setElementVelocity(vehicle, b.velX, b.velY, b.velZ);
-		setVehicleTurnVelocity(vehicle, b.turnX, b.turnY, b.turnZ)
-		return vehicle
-	else 
+		setTimer(function()
+      setElementVelocity(vehicle, b.velX, b.velY, b.velZ);
+		  setVehicleTurnVelocity(vehicle, b.turnX, b.turnY, b.turnZ)
+    end, 100, 1)
+    return vehicle
+	else
+    outputDebugString("3")
 		local posVehicle = deliveryCar
 		local posX, posY, posZ = getElementPosition ( posVehicle )
 		posZ = 1000
@@ -442,7 +472,7 @@ function saveHunterBackups()
 	for i,v in ipairs(huntersInVehicle) do
 		if huntersInVehicle ~= nil then
 			local posVehicle = getPedOccupiedVehicle(v)
-			if posVehicle ~= nil then
+			if posVehicle then
 				local posX, posY, posZ = getElementPosition ( posVehicle )
 				local rotX, rotY, rotZ = getElementRotation ( posVehicle )
 				local velX, velY, velZ = getElementVelocity ( posVehicle )
@@ -452,8 +482,6 @@ function saveHunterBackups()
 				if playerBackups == nil then
 					playerBackups = {};
 					hunterBackups[v] = playerBackups;
-				else
-					outputDebugString("Player backups: " .. #playerBackups)
 				end
 
 				local backup = {posX = posX, posY = posY, posZ = posZ, rotX = rotX, rotY = rotY, rotZ = rotZ, velX = velX, velY = velY, velZ = velZ, turnX = turnX, turnY = turnY, turnZ = turnZ}
@@ -462,11 +490,7 @@ function saveHunterBackups()
 
 				if #playerBackups > maxBackups then
 					table.remove(playerBackups, 1)
-					outputDebugString("Removing old backups ")
 				end
-
-				outputDebugString("Player backups: " .. #playerBackups .. " " .. #hunterBackups[v])
-				outputDebugString("All backups: " .. #hunterBackups)
 			end
 		end
 	end
@@ -487,7 +511,7 @@ function quitPlayer ( quitType )
 
 	local i=1
 	while i <= #huntersInVehicle do
-		if huntersInVehicle[i] == v then
+		if huntersInVehicle[i] == source then
 			table.remove(huntersInVehicle, i)
 			outputDebugString("Remove hunter in vehicle")
 		else
@@ -558,6 +582,6 @@ end )
 addEventHandler("onResourceStart",getResourceRootElement(getThisResource()),
 function()
 	call(scoreboardRes,"addScoreboardColumn",SCORE_KEY)
-	--setTimer(saveHunterBackups, 5000, 999999999)
+	setTimer(saveHunterBackups, 5000, 999999999)
   setTimer(givePointsToDeliveryManBasedOnDistance, 5000, 999999999)
 end )
