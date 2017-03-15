@@ -1,6 +1,6 @@
 local x = 1 rocketsFired = {}
 local magSize = 4;
-local reloadTimeInHundreds = 500;
+local reloadTimeInMillis = 5000;
 
 function disableFireForHydra ( disable )
   if disable then
@@ -22,7 +22,7 @@ function missileFired ()
     local done = false
     while not done do
       local timeElapsed = now - rocketsFired[0];
-      if timeElapsed > reloadTimeInHundreds*10 then
+      if timeElapsed > reloadTimeInMillis then
         table.remove(rocketsFired, 0)
         if #rocketsFired <= 0 then
           done = true
@@ -58,7 +58,7 @@ addEventHandler( "onClientProjectileCreation", getRootElement(), projectileFired
 
 function reloadTimeChangedRequest(newMagSize, newReloadTime)
   magSize = newMagSize;
-  reloadTimeInHundreds = newReloadTime;
+  reloadTimeInMillis = newReloadTime;
 end
 addEvent("onReloadTimeChangedRequest", true)
 addEventHandler("onReloadTimeChangedRequest", getLocalPlayer(), reloadTimeChangedRequest)
