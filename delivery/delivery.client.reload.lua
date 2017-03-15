@@ -52,5 +52,11 @@ function projectileFired ( )
 	   missileFired()
 	end
 end
+addEventHandler( "onClientProjectileCreation", localPlayer, projectileFired )
 
-addEventHandler( "onClientProjectileCreation", getRootElement(), projectileFired )
+function reloadTimeChangedRequest(newMagSize, newReloadTime)
+  magSize = newMagSize;
+  reloadTimeInHundreds = newReloadTime;
+end
+addEvent("onReloadTimeChangedRequest", true)
+addEventHandler("onReloadTimeChangedRequest", localPlayer, reloadTimeChangedRequest)

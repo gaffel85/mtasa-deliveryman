@@ -554,6 +554,11 @@ function quitPlayer ( quitType )
 end
 addEventHandler ( "onPlayerQuit", getRootElement(), quitPlayer )
 
+function setReloadTimes ( sourcePlayer, command, magSize, reloadTime)
+  triggerClientEvent(getRootElement(), "onReloadTimeChangedRequest", , getRootElement(), magSize, reloadTime)
+end
+addCommandHandler ( "reload", setReloadTimes )
+
 function commitSuicide ( sourcePlayer )
 	-- kill the player and make him responsible for it
 	killPed ( sourcePlayer, sourcePlayer )
