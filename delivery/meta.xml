@@ -9,4 +9,6 @@
     <script src="delivery.client.respawn.lua" type="client" />
     <script src="delivery.client.reload.lua" type="client" />
     <script src="delivery.client.hunterMarker.lua" type="client" />
+    <!--<script src="delivery.client.missileWarning.lua" type="client" />-->
+
 </meta>
