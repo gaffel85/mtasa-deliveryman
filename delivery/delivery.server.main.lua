@@ -84,14 +84,11 @@ function spawn(thePlayer)
       -- Respawn in hunter
       outputDebugString("6")
       local jet = createMovingHunterJet(thePlayer)
-      setVehicleLandingGearDown ( jet, false )
       if jet then
         outputDebugString("7")
 	       spawnPlayer(thePlayer, 0, 0, 0, 0, 287)
          setTimer(function()
            warpPedIntoVehicle(thePlayer, jet)
-           triggerClientEvent(thePlayer, "onHunterRespawn", thePlayer, 5000)
-
            fadeCamera(thePlayer, true)
            setCameraTarget(thePlayer, thePlayer)
          end, 50, 1)
@@ -144,9 +141,17 @@ function cleanUpMap()
 	destroyElementsByType ("vehicle")
 end
 
+function resetRoundVars()
+  currentCheckpoint = 1
+  currentCheckpointBlip = nil
+  deliveryCar = nil
+  huntersInVehicle = {}
+  hunterBackups = {}
+  deliveryManLatestDistance = 999999999
+end
+
 function newRound()
-	hunterBackups = {}
-    huntersInVehicle = {}
+	resetRoundVars()
 	cleanUpMap();
 	deliveryCar = createDeliveryCar(getElementsByType ( "deliveryCar" , mapRoot )[1])
 	createCheckpoints()
@@ -196,11 +201,22 @@ function startGameMap( startedMap )
 	checkPointCoords = getElementsByType ( "checkpoint" , mapRoot )
 	goalCoord = getElementsByType ( "goal" , mapRoot )[1]
 	lobbyStartCoord = getElementsByType ( "lobbyStart" , mapRoot )[1]
-  cleanUpMap()
-	startLobby()
-  respawnAllPlayers()
+  resetGame()
 end
 addEventHandler("onGamemodeMapStart", getRootElement(), startGameMap)
+
+function resetGame()
+  cleanUpMap()
+  resetRoundVars()
+
+  deliveryMan = nil
+  roundActive = false
+  xMans = {}
+  gameStarted = false
+
+  startLobby()
+  respawnAllPlayers()
+end
 
 function startLobby()
 	lobbyStartCheckpoint = createCheckPoint(lobbyStartCoord)
@@ -239,13 +255,7 @@ function gameFinished()
 
   local winnerName = getPlayerName(winner)
   displayMessageForAll(END_GAME_TEXT_ID, winnerName.." won with "..maxScore.."! New game will start in 60 sec.", nil, nil, 60000)
-  setTimer( prepareNewRound, 5000, 1)
-
-FIxa reset av allt
-
-  cleanUpMap();
-  gameStarted = false;
-  respawnAllPlayers();
+  setTimer( resetGame, 5000, 1)
 end
 
 function prepareNewRound()
@@ -438,9 +448,16 @@ function createMovingHunterJet(player)
     outputDebugString("2")
 		local b = playerBackups[1]
 		local vehicle =  createVehicle(520, b.posX, b.posY, b.posZ, b.rotX, b.rotY, b.rotZ, "Hunter")
+    triggerClientEvent(player, "onSetGetThrusters", player, vehicle, b.thrusters)
 		setTimer(function()
       setElementVelocity(vehicle, b.velX, b.velY, b.velZ);
 		  setVehicleTurnVelocity(vehicle, b.turnX, b.turnY, b.turnZ)
+
+      local isLandingGearDown = false
+      if b.landingGearDown then
+        isLandingGearDown = b.landingGearDown
+      end
+      setVehicleLandingGearDown(vehicle, isLandingGearDown)
     end, 100, 1)
     return vehicle
 	else
@@ -477,6 +494,7 @@ function saveHunterBackups()
 				local rotX, rotY, rotZ = getElementRotation ( posVehicle )
 				local velX, velY, velZ = getElementVelocity ( posVehicle )
 				local turnX, turnY, turnZ = getVehicleTurnVelocity ( posVehicle )
+        local isLandingGearDown = getVehicleLandingGearDown (posVehicle )
 
 				local playerBackups = hunterBackups[v];
 				if playerBackups == nil then
@@ -484,17 +502,31 @@ function saveHunterBackups()
 					hunterBackups[v] = playerBackups;
 				end
 
-				local backup = {posX = posX, posY = posY, posZ = posZ, rotX = rotX, rotY = rotY, rotZ = rotZ, velX = velX, velY = velY, velZ = velZ, turnX = turnX, turnY = turnY, turnZ = turnZ}
+				local backup = {posX = posX, posY = posY, posZ = posZ, rotX = rotX, rotY = rotY, rotZ = rotZ, velX = velX, velY = velY, velZ = velZ, turnX = turnX, turnY = turnY, turnZ = turnZ, landingGearDown = isLandingGearDown}
 
 				table.insert(playerBackups, backup)
 
 				if #playerBackups > maxBackups then
 					table.remove(playerBackups, 1)
 				end
+
+        -- Get thrusters state
+        triggerClientEvent(thePlayer, "onSetGetThrusters", thePlayer)
 			end
 		end
 	end
 end
+
+function saveThrusterStatesRequest(state)
+  local player = source
+  local playerBackups = hunterBackups[player];
+  if playerBackups ~= nil and #playerBackups > 0 then
+    local latest = playerBackups[#playerBackups]
+    latest.thrusters = state
+  end
+end
+addEvent("clientSaveThrusterStatesRequest", true)
+addEventHandler("clientSaveThrusterStatesRequest", getRootElement(), saveThrusterStatesRequest)
 
 function joinHandler()
 
