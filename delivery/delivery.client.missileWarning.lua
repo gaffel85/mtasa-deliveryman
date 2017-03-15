@@ -16,7 +16,7 @@ function renderMissileLine(missile)
   local x1, y1, z1 = getElementPosition(missile)
   local velX, velY, velZ = getElementVelocity(missile)
 
-  local 
+  local
 
   velX*t + x1 = x2
 end

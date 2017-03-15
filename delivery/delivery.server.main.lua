@@ -41,8 +41,6 @@ addEventHandler ( "onVehicleStartExit", getRootElement(), exitVehicle)
 function enterVehicle ( thePlayer, seat, jacked ) -- when a player enters a vehicle
     if ( thePlayer ~= deliveryMan) then
       table.insert(huntersInVehicle, thePlayer)
-      outputDebugString("Sending: "..tostring(lastHunter))
-      triggerClientEvent(getRootElement(), "onDeliveryManChanged", lastHunter)
     end
 end
 addEventHandler ( "onVehicleEnter", getRootElement(), enterVehicle )

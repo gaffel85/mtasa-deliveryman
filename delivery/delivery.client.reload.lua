@@ -13,7 +13,8 @@ function disableFireForHydra ( disable )
 end
 
 function missileFired ()
-  local now = os.clock();
+  outputDebugString("B")
+  local now = getTickCount()
   outputChatBox("Missile fired ".. now);
 
   -- Remove old rockets from history
@@ -21,7 +22,7 @@ function missileFired ()
     local done = false
     while not done do
       local timeElapsed = now - rocketsFired[0];
-      if timeElapsed > reloadTimeInHundreds then
+      if timeElapsed > reloadTimeInHundreds*10 then
         table.remove(rocketsFired, 0)
         if #rocketsFired <= 0 then
           done = true
@@ -38,7 +39,7 @@ function missileFired ()
 
   if #rocketsFired >= magSize then
     disableFireForHydra(true);
-    local reloadTime = os.clock() - rocketsFired[0];
+    local reloadTime = getTickCount() - rocketsFired[0];
     setTimer(function()
       table.remove(rocketsFired, 0)
       disableFireForHydra(false);
@@ -47,16 +48,17 @@ function missileFired ()
 end
 
 function projectileFired ( )
+  outputDebugString("A")
   local projType = getProjectileType( source )
   if projType == 19 or projType == 20 then
 	   missileFired()
 	end
 end
-addEventHandler( "onClientProjectileCreation", localPlayer, projectileFired )
+addEventHandler( "onClientProjectileCreation", getRootElement(), projectileFired )
 
 function reloadTimeChangedRequest(newMagSize, newReloadTime)
   magSize = newMagSize;
   reloadTimeInHundreds = newReloadTime;
 end
 addEvent("onReloadTimeChangedRequest", true)
-addEventHandler("onReloadTimeChangedRequest", localPlayer, reloadTimeChangedRequest)
+addEventHandler("onReloadTimeChangedRequest", getLocalPlayer(), reloadTimeChangedRequest)
