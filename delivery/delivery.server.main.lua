@@ -41,6 +41,8 @@ addEventHandler ( "onVehicleStartExit", getRootElement(), exitVehicle)
 function enterVehicle ( thePlayer, seat, jacked ) -- when a player enters a vehicle
     if ( thePlayer ~= deliveryMan) then
       table.insert(huntersInVehicle, thePlayer)
+      outputDebugString("Sending: "..tostring(lastHunter))
+      triggerClientEvent(getRootElement(), "onDeliveryManChanged", lastHunter)
     end
 end
 addEventHandler ( "onVehicleEnter", getRootElement(), enterVehicle )
@@ -126,6 +128,7 @@ function setUpDeliveryManStuff()
 		outputDebugString("Game started ")
 	end
 	if (deliveryMan ~= nil) then
+    triggerClientEvent(getRootElement(), "onDeliveryManChanged", deliveryMan)
 		local checkpoint = checkPoints[currentCheckpoint]
 		addCheckpointBlip(checkpoint)
 		setElementData( deliveryMan, SCORE_KEY , 0)
@@ -511,7 +514,7 @@ function saveHunterBackups()
 				end
 
         -- Get thrusters state
-        triggerClientEvent(thePlayer, "onSetGetThrusters", thePlayer)
+        triggerClientEvent(v, "onSetGetThrusters", v)
 			end
 		end
 	end
@@ -555,7 +558,7 @@ end
 addEventHandler ( "onPlayerQuit", getRootElement(), quitPlayer )
 
 function setReloadTimes ( sourcePlayer, command, magSize, reloadTime)
-  triggerClientEvent(getRootElement(), "onReloadTimeChangedRequest", , getRootElement(), magSize, reloadTime)
+  triggerClientEvent(getRootElement(), "onReloadTimeChangedRequest", getRootElement(), magSize, reloadTime)
 end
 addCommandHandler ( "reload", setReloadTimes )
 

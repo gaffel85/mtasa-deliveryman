@@ -1,22 +1,23 @@
 local deliveryMan = nil
 
-function deliveryManChanged(newDeliveryMan)
-  deliveryMan = newDeliveryMan
+function deliveryManChanged()
+  deliveryMan = source
+  setVehicleAdjustableProperty ( getPedOccupiedVehicle(getLocalPlayer()), 2500 )
 end
 addEvent("onDeliveryManChanged", true)
-addEventHandler("onDeliveryManChanged", localPlayer, deliveryManChanged)
+addEventHandler("onDeliveryManChanged", getRootElement(), deliveryManChanged)
 
 function createMarker ( )
+  deliveryMan = getLocalPlayer()
   if deliveryMan then
     local car = getPedOccupiedVehicle(deliveryMan)
+    local car = deliveryMan
     if car then
       x1, y1, z1 = getElementPosition ( car )
-      dxDrawLine3D ( x1, y1, z1, x1, y1, z1+2, tocolor ( 255, 0, 0, 230 ), 50, true) -- Create 3D Line between test vehicle and local player.
+      dxDrawLine3D ( x1, y1, z1, x1, y1, z1+2, tocolor ( 255, 0, 0, 230 ), 500, true) -- Create 3D Line between test vehicle and local player.
     end
   end
 end
-addCommandHandler("test", makeLineAppear)
-
 
 function exitVehicle ( thePlayer, seat, jacked )
   removeEventHandler("onClientRender", root, createMarker)

@@ -1,6 +1,6 @@
-var rocketsFired = {}
-var magSize = 4;
-var reloadTimeInHundreds = 500;
+local x = 1 rocketsFired = {}
+local magSize = 4;
+local reloadTimeInHundreds = 500;
 
 function disableFireForHydra ( disable )
   if disable then
@@ -38,7 +38,7 @@ function missileFired ()
 
   if #rocketsFired >= magSize then
     disableFireForHydra(true);
-    var reloadTime = os.clock() - rocketsFired[0];
+    local reloadTime = os.clock() - rocketsFired[0];
     setTimer(function()
       table.remove(rocketsFired, 0)
       disableFireForHydra(false);
