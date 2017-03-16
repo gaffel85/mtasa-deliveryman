@@ -4,11 +4,11 @@ local reloadTimeInMillis = 5000;
 
 function disableFireForHydra ( disable )
   if disable then
-    outputChatBox("Reloading", getLocalPlayer())
+    outputChatBox("Reloading")
     --toggleControl ( "vehicle_secondary_fire", false ) -- disable their fire key
     --toggleControl ( "vehicle_fire", true ) -- enable their fire key
   else
-    outputChatBox("Reloading done", getLocalPlayer())
+    outputChatBox("Reloading done")
   --  toggleControl ( "vehicle_secondary_fire", true ) -- enable their fire key
     --toggleControl ( "vehicle_fire", true ) -- enable their fire key
   end
