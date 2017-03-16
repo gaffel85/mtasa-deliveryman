@@ -612,6 +612,12 @@ function clearMessageForPlayer ( player, ID )
 	call ( getResourceFromName ( "easytext" ), "clearMessageForPlayer", player, ID )
 end
 
+addEvent("onDisplayClientText", true)
+addEventHandler ( "onDisplayClientText", getRootElement(), displayMessageForPlayer)
+
+addEvent("onClearClientText", true)
+addEventHandler ( "onClearClientText", getRootElement(), clearMessageForPlayer)
+
 addEventHandler("onResourceStop",getResourceRootElement(getThisResource()),
 function()
 	call(scoreboardRes,"removeScoreboardColumn",SCORE_KEY)

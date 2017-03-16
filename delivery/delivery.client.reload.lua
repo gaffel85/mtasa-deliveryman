@@ -4,11 +4,11 @@ local reloadTimeInMillis = 5000;
 
 function disableFireForHydra ( disable )
   if disable then
-    outputChatBox("Reloading")
+    displayMessageForPlayer(92992, "Reloading", reloadTimeInMillis, 0.5, 0.9, 255, 0, 0 )
     --toggleControl ( "vehicle_secondary_fire", false ) -- disable their fire key
     --toggleControl ( "vehicle_fire", true ) -- enable their fire key
   else
-    outputChatBox("Reloading done")
+    clearMessageForPlayer(92992)
   --  toggleControl ( "vehicle_secondary_fire", true ) -- enable their fire key
     --toggleControl ( "vehicle_fire", true ) -- enable their fire key
   end
@@ -75,3 +75,12 @@ function reloadTimeChangedRequest(newMagSize, newReloadTime)
 end
 addEvent("onReloadTimeChangedRequest", true)
 addEventHandler("onReloadTimeChangedRequest", getLocalPlayer(), reloadTimeChangedRequest)
+
+
+function displayMessageForPlayer ( ID, message, displayTime, posX, posY, r, g, b, alpha, scale )
+	triggerServerEvent("onDisplayClientText", resourceRoot, getLocalPlayer(), ID, message, displayTime, posX, posY, r, g, b, scale)
+end
+
+function clearMessageForPlayer ( ID )
+	triggerServerEvent("onClearClientText", resourceRoot, getLocalPlayer(), ID)
+end
