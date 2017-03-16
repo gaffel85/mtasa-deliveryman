@@ -1,7 +1,9 @@
 local missilesInfo = {}
 local maxWarningDist = 200
 
-addEventHandler("onClientRender", root, function()
+addEventHandler("onClientRender", root, renderAllMissiles)
+
+function renderAllMissiles()
   --if nbrOfMissiles > 0 then
     local projectiles = getElementsByType ("projectile")
     for k,v in ipairs(projectiles) do
@@ -11,7 +13,7 @@ addEventHandler("onClientRender", root, function()
       end
     end
   --end
-end)
+end
 
 function renderMissileLine(missile)
   local info = missilesInfo[missile]
@@ -67,7 +69,11 @@ end
 addEventHandler( "onClientProjectileCreation", getRootElement(), onProjectile )
 
 function warningDeliveryManChanged()
-
+  if source == getLocalPlayer() then
+    addEventHandler("onClientRender", root, renderAllMissiles)
+  else
+    removeEventHandler("onClientRender", root, renderAllMissiles)
+  end
 end
 addEventHandler("onDeliveryManChanged", getRootElement(), warningDeliveryManChanged)
 
