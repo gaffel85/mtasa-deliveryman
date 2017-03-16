@@ -560,6 +560,11 @@ function setReloadTimes ( sourcePlayer, command, magSize, reloadTime)
 end
 addCommandHandler ( "reload", setReloadTimes )
 
+function setMissileWarningDist ( sourcePlayer, command, maxDist)
+  triggerClientEvent(getRootElement(), "onMissileWarningDistChangedRequest", getRootElement(), maxDist)
+end
+addCommandHandler ( "reload", setMissileWarningDist )
+
 function commitSuicide ( sourcePlayer )
 	-- kill the player and make him responsible for it
 	killPed ( sourcePlayer, sourcePlayer )
