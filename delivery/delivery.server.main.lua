@@ -63,55 +63,59 @@ function getDeliveryManSpawnPoint ()
 end
 
 function spawn(thePlayer)
-  outputDebugString("4")
 	if (thePlayer == deliveryMan) then
-		--deliveryCar = createVehicle ( 566, spawnX,spawnY,spawnZ )
-		outputDebugString("Will Spawn player")
-    spawnPlayer(thePlayer, 0, 0, 0, 0, 253)
-    if deliveryCar  then
-      outputDebugString("Will warp to car: "..getVehicleName(deliveryCar))
-			setTimer(function()
-        warpPedIntoVehicle(thePlayer, deliveryCar)
-        fadeCamera(thePlayer, true)
-        setCameraTarget(thePlayer, thePlayer)
-      end, 50, 1)
-    end
-
-
+		spawnDeliveryMan(thePlayer)
 	else
-    outputDebugString("5")
-    if arrayExists(huntersInVehicle, thePlayer) == true then
-      -- Respawn in hunter
-      outputDebugString("6")
-      local jet = createMovingHunterJet(thePlayer)
-      if jet then
-        outputDebugString("7")
-	       spawnPlayer(thePlayer, 0, 0, 0, 0, 287)
-         setTimer(function()
-           warpPedIntoVehicle(thePlayer, jet)
-           fadeCamera(thePlayer, true)
-           setCameraTarget(thePlayer, thePlayer)
-         end, 50, 1)
-         return
-       end
-    end
-
-  outputDebugString("8")
-  		outputDebugString("Spawning hunter")
-  		local spawnX, spawnY, spawnZ
-  		if(spawnPoints == nil) then
-  			spawnX = fallbackSpawnX
-  			spawnY = fallbackSpawnY
-  			spawnZ = fallbackSpawnZ
-  		else
-  			spawnX, spawnY, spawnZ = getNextHunterSpawn()
-  		end
-  outputDebugString("9")
-  		spawnPlayer(thePlayer, spawnX, spawnY, spawnZ, 0, 287)
-  		giveWeapon (thePlayer, 24 , 50, true )
-  		fadeCamera(thePlayer, true)
-  		setCameraTarget(thePlayer, thePlayer)
+    local didSpawn = trySpawnMovingHunter(thePlayer)
+    if not didSpawn then
+  	 spawnnHunterAtBase(thePlayer)
+     end
 	end
+end
+
+function spawnDeliveryMan()
+  outputDebugString("Will Spawn player")
+  spawnPlayer(thePlayer, 0, 0, 0, 0, 253)
+  if deliveryCar then
+    setTimer(function()
+      warpPedIntoVehicle(thePlayer, deliveryCar)
+      fadeCamera(thePlayer, true)
+      setCameraTarget(thePlayer, thePlayer)
+    end, 50, 1)
+  end
+end
+
+function trySpawnMovingHunter(thePlayer)
+  if arrayExists(huntersInVehicle, thePlayer) == true then
+    -- Respawn in hunter
+    local jet = createMovingHunterJet(thePlayer)
+    if jet then
+       spawnPlayer(thePlayer, 0, 0, 0, 0, 287)
+       setTimer(function()
+         warpPedIntoVehicle(thePlayer, jet)
+         fadeCamera(thePlayer, true)
+         setCameraTarget(thePlayer, thePlayer)
+       end, 50, 1)
+       return true
+     end
+  end
+  return false
+end
+
+function spawnHunterAtBase(thePlayer)
+  outputDebugString("Spawning hunter")
+  local spawnX, spawnY, spawnZ
+  if(spawnPoints == nil) then
+    spawnX = fallbackSpawnX
+    spawnY = fallbackSpawnY
+    spawnZ = fallbackSpawnZ
+  else
+    spawnX, spawnY, spawnZ = getNextHunterSpawn()
+  end
+  spawnPlayer(thePlayer, spawnX, spawnY, spawnZ, 0, 287)
+  giveWeapon (thePlayer, 24 , 50, true )
+  fadeCamera(thePlayer, true)
+  setCameraTarget(thePlayer, thePlayer)
 end
 
 function respawnAllPlayers()
@@ -460,6 +464,7 @@ function createMovingHunterJet(player)
       end
       setVehicleLandingGearDown(vehicle, isLandingGearDown)
     end, 100, 1)
+    rewriteHistory(playerBackups)
     return vehicle
 	else
     outputDebugString("3")
@@ -473,6 +478,12 @@ function createMovingHunterJet(player)
 		setElementVelocity(vehicle, velX, velY, velZ);
 		return vehicle
 	end
+end
+
+function rewriteHistory(backups)
+  while #backups > 1 do
+    table.remove(backups, 2)
+  end
 end
 
 function createHunterJet(element)
