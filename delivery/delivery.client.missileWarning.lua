@@ -1,8 +1,6 @@
 local missilesInfo = {}
 local maxWarningDist = 200
 
-addEventHandler("onClientRender", root, renderAllMissiles)
-
 function renderAllMissiles()
   --if nbrOfMissiles > 0 then
     local projectiles = getElementsByType ("projectile")
@@ -15,6 +13,8 @@ function renderAllMissiles()
   --end
 end
 
+addEventHandler("onClientRender", root, renderAllMissiles)
+
 function renderMissileLine(missile)
   local info = missilesInfo[missile]
   if not info then
@@ -26,7 +26,7 @@ function renderMissileLine(missile)
   local x1, y1, z1 = getElementPosition(missile)
   local playerX, playerY, playerZ = getElementPosition(getLocalPlayer())
   local distanceAway = getDistanceBetweenPoints3D(x1, y1, z1, playerX, playerY, playerZ)
-  outputDebugString("Dist: "..distanceAway .. " Accepted: "..maxWarningDist)
+
   if distanceAway < maxWarningDist then
     dxDrawLine3D ( x1, y1, z1, info.x2, info.y2, info.z2, tocolor ( 180, 0, 0, 200 ), 4) -- Create 3D Line between test vehicle and local player.
   end

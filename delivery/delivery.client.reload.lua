@@ -1,6 +1,6 @@
 local rocketsFired = {}
-local magSize =2;
-local reloadTimeInMillis = 5000;
+local magSize = 8;
+local reloadTimeInMillis = 2000;
 
 function disableFireForHydra ( disable )
   if disable then

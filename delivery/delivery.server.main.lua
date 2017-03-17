@@ -68,13 +68,13 @@ function spawn(thePlayer)
 	else
     local didSpawn = trySpawnMovingHunter(thePlayer)
     if not didSpawn then
-  	 spawnnHunterAtBase(thePlayer)
+  	 spawnHunterAtBase(thePlayer)
      end
 	end
 end
 
 function spawnDeliveryMan()
-  outputDebugString("Will Spawn player")
+  outputDebugString("Will spawn delivery man")
   spawnPlayer(thePlayer, 0, 0, 0, 0, 253)
   if deliveryCar then
     setTimer(function()
@@ -90,6 +90,7 @@ function trySpawnMovingHunter(thePlayer)
     -- Respawn in hunter
     local jet = createMovingHunterJet(thePlayer)
     if jet then
+       outputDebugString("Will spawn moving hunter")
        spawnPlayer(thePlayer, 0, 0, 0, 0, 287)
        setTimer(function()
          warpPedIntoVehicle(thePlayer, jet)
@@ -103,7 +104,7 @@ function trySpawnMovingHunter(thePlayer)
 end
 
 function spawnHunterAtBase(thePlayer)
-  outputDebugString("Spawning hunter")
+  outputDebugString("Spawning hunter at base")
   local spawnX, spawnY, spawnZ
   if(spawnPoints == nil) then
     spawnX = fallbackSpawnX
@@ -574,7 +575,7 @@ addCommandHandler ( "reload", setReloadTimes )
 function setMissileWarningDist ( sourcePlayer, command, maxDist)
   triggerClientEvent(getRootElement(), "onMissileWarningDistChangedRequest", getRootElement(), maxDist)
 end
-addCommandHandler ( "reload", setMissileWarningDist )
+addCommandHandler ( "warning", setMissileWarningDist )
 
 function commitSuicide ( sourcePlayer )
 	-- kill the player and make him responsible for it
