@@ -73,7 +73,7 @@ function spawn(thePlayer)
 	end
 end
 
-function spawnDeliveryMan()
+function spawnDeliveryMan(thePlayer)
   outputDebugString("Will spawn delivery man")
   spawnPlayer(thePlayer, 0, 0, 0, 0, 253)
   if deliveryCar then
@@ -86,7 +86,7 @@ function spawnDeliveryMan()
 end
 
 function trySpawnMovingHunter(thePlayer)
-  if arrayExists(huntersInVehicle, thePlayer) == true then
+  if deliveryMan ~= nil and arrayExists(huntersInVehicle, thePlayer) == true then
     -- Respawn in hunter
     local jet = createMovingHunterJet(thePlayer)
     if jet then
@@ -499,6 +499,10 @@ end
 
 local maxBackups = 3
 function saveHunterBackups()
+  if not roundActive then
+    return
+  end
+
 	for i,v in ipairs(huntersInVehicle) do
 		if huntersInVehicle ~= nil then
 			local posVehicle = getPedOccupiedVehicle(v)
