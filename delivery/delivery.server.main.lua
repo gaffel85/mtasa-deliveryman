@@ -161,7 +161,7 @@ function newRound()
 	cleanUpMap();
 	deliveryCar = createDeliveryCar(getElementsByType ( "deliveryCar" , mapRoot )[1])
 	createCheckpoints()
-	goalCheckpoint = createCheckPoint(goalCoord)
+	goalCheckpoint = createCheckPoint(goalCoord, 0, 255, 0)
 	outputDebugString("New new  "..#checkPoints)
 	createHunterJets()
 	respawnAllPlayers()
@@ -225,7 +225,7 @@ function resetGame()
 end
 
 function startLobby()
-	lobbyStartCheckpoint = createCheckPoint(lobbyStartCoord)
+	lobbyStartCheckpoint = createCheckPoint(lobbyStartCoord, 0, 0, 255)
 	createHunterJets()
 end
 
@@ -388,8 +388,11 @@ end
 function createCheckpoints()
 	currentCheckpoint = 1;
 	checkPoints = {}
+  local index = 1
 	for i,v in ipairs(checkPointCoords) do
-		table.insert(checkPoints, createCheckPoint(v))
+    local g = (index / #checkPointCoords) * 255
+		table.insert(checkPoints, createCheckPoint(v, 0, g, 255))
+    index = index + 1
 	end
 end
 
@@ -422,12 +425,12 @@ function addCheckpointBlip(checkpoint)
 	setElementVisibleTo ( currentCheckpointBlip, deliveryMan, true )
 end
 
-function createCheckPoint(element)
+function createCheckPoint(element, r, g, b)
 	local posX, posY, posZ = coordsFromEdl ( element )
 	local checkType = getElementData ( element, "type" )
 	local color = getElementData ( element, "color" )
 	local size = getElementData ( element, "size" )
-	return createMarker(posX, posY, posZ, checkType, size)
+	return createMarker(posX, posY, posZ, checkType, size, r, g, b)
 end
 
 function coordsFromEdl(element)

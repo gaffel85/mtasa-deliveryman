@@ -14,8 +14,9 @@ function createMarker ( )
       x1, y1, z1 = getElementPosition ( car )
       local playerX, playerY, playerZ = getElementPosition(getLocalPlayer())
       local distanceAway = getDistanceBetweenPoints3D(x1, y1, z1, playerX, playerY, playerZ)
-      local alpha = math.min(distanceAway*5, 255)
-      dxDrawLine3D ( x1, y1, z1, x1, y1, z1+10, tocolor ( 255, 0, 0, alpha ), 500, true) -- Create 3D Line between test vehicle and local player.
+      local alpha = math.min(distanceAway/2, 255)
+      local height = math.min(distanceAway/100, 5)
+      dxDrawLine3D ( x1, y1, z1, x1, y1, z1+height, tocolor ( 255, 0, 0, alpha ), 500, true) -- Create 3D Line between test vehicle and local player.
     end
   end
 end

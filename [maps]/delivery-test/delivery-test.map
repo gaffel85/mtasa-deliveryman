@@ -9,5 +9,5 @@
     <hunterSpawnpoint id="hunterSpawnpoint (1)" skin="0" posX="1815.9" posY="-2585.5" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
     <hunterSpawnpoint id="hunterSpawnpoint (2)" skin="0" posX="1839.9" posY="-2586.2" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
     <hunterSpawnpoint id="hunterSpawnpoint (3)" skin="0" posX="1878.5" posY="-2586.8999" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
-    <lobbyStart id="lobbyStart (1)" color="#0000FFFF" type="checkpoint" size="20" posX="1842.3" posY="-2566.3999" posZ="12.6" rotX="0" rotY="0" rotZ="0"></lobbyStart>
+    <lobbyStart id="lobbyStart (1)" color="#0000FFFF" type="checkpoint" size="10" posX="1842.3" posY="-2566.3999" posZ="12.6" rotX="0" rotY="0" rotZ="0"></lobbyStart>
 </map>
