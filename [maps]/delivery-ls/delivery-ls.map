@@ -1,0 +1,62 @@
+<map edf:definitions="delivery">
+    <deliveryCar id="deliveryCar (Bullet) (1)" plate="POSTNORD" model="541" posX="2778.6001" posY="-2417.3" posZ="13.3" rotX="0" rotY="0" rotZ="86"></deliveryCar>
+    <checkpoint id="checkpoint (1)" color="#0000FFFF" type="checkpoint" size="20" posX="2485" posY="-2283.7" posZ="23.9" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (2)" color="#0000FFFF" type="checkpoint" size="20" alpha="255" interior="0" posX="2140.1001" posY="-1751" posZ="12.4" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (3)" color="#0000FFFF" type="checkpoint" size="20" alpha="255" interior="0" posX="1686.7" posY="-1638.4" posZ="19.3" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (4)" color="#0000FFFF" type="checkpoint" size="20" alpha="255" interior="0" posX="1372.3" posY="-1589.7" posZ="23.5" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (5)" color="#0000FFFF" type="checkpoint" size="20" alpha="255" interior="0" posX="1287" posY="-1394.2" posZ="12.2" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (6)" color="#0000FFFF" type="checkpoint" size="20" alpha="255" interior="0" posX="727.09998" posY="-1401.4" posZ="12.4" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (7)" color="#0000FFFF" type="checkpoint" size="20" alpha="255" interior="0" posX="632.5" posY="-1279.2" posZ="15.4" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (8)" color="#0000FFFF" type="checkpoint" size="40" alpha="255" interior="0" posX="-45.1" posY="-1374.9" posZ="3.7" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (10)" color="#0000FFFF" type="checkpoint" size="40" alpha="255" interior="0" posX="-14.6" posY="-2645.3999" posZ="81.4" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (11)" color="#0000FFFF" type="checkpoint" size="40" alpha="255" interior="0" posX="-1004.9" posY="-2859.5" posZ="66.5" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (12)" color="#0000FFFF" type="checkpoint" size="40" alpha="255" interior="0" posX="-1665.8" posY="-2710.6001" posZ="53.3" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (13)" color="#0000FFFF" type="checkpoint" size="40" alpha="255" interior="0" posX="-2466" posY="-2428.5" posZ="55.7" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (14)" color="#0000FFFF" type="checkpoint" size="40" alpha="255" interior="0" posX="-2940.1001" posY="-1355.4" posZ="21.9" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (15)" color="#0000FFFF" type="checkpoint" size="40" alpha="255" interior="0" posX="-2851.7" posY="-596.70001" posZ="34.9" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (16)" color="#0000FFFF" type="checkpoint" size="40" alpha="255" interior="0" posX="-2128.3999" posY="-343.39999" posZ="34" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (17)" color="#0000FFFF" type="checkpoint" size="15" alpha="255" interior="0" posX="-2011.9" posY="-291.79999" posZ="34.4" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (18)" color="#0000FFFF" type="checkpoint" size="20" alpha="255" interior="0" posX="-1810.1" posY="-239.5" posZ="17.3" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <checkpoint id="checkpoint (19)" color="#0000FFFF" type="checkpoint" size="20" alpha="255" interior="0" posX="-1814" posY="-583.20001" posZ="15.4" rotX="0" rotY="0" rotZ="0"></checkpoint>
+    <goal id="goal (1)" color="#FF00FFFF" type="checkpoint" size="20" posX="-1547" posY="-431.39999" posZ="5.1" rotX="0" rotY="0" rotZ="0"></goal>
+    <hunterJetSpawn id="hunterJetSpawn (Hydra) (1)" plate="HUNTER" model="520" posX="1897.9" posY="-2593.8" posZ="14.5" rotX="0" rotY="0" rotZ="0"></hunterJetSpawn>
+    <hunterJetSpawn id="hunterJetSpawn (Hydra) (2)" plate="HUNTER" model="520" alpha="255" interior="0" posX="1884.2" posY="-2593.8" posZ="14.5" rotX="0" rotY="0" rotZ="0"></hunterJetSpawn>
+    <hunterJetSpawn id="hunterJetSpawn (Hydra) (3)" plate="HUNTER" model="520" alpha="255" interior="0" posX="1869.3" posY="-2593.5" posZ="14.5" rotX="0" rotY="0" rotZ="0"></hunterJetSpawn>
+    <hunterJetSpawn id="hunterJetSpawn (Hydra) (4)" plate="HUNTER" model="520" alpha="255" interior="0" posX="1909.3" posY="-2593" posZ="14.5" rotX="0" rotY="0" rotZ="0"></hunterJetSpawn>
+    <hunterJetSpawn id="hunterJetSpawn (Hydra) (5)" plate="HUNTER" model="520" alpha="255" interior="0" posX="1855.8" posY="-2593.2" posZ="14.5" rotX="0" rotY="0" rotZ="0"></hunterJetSpawn>
+    <hunterJetSpawn id="hunterJetSpawn (Hydra) (6)" plate="HUNTER" model="520" alpha="255" interior="0" posX="1838.5" posY="-2593.7" posZ="14.5" rotX="0" rotY="0" rotZ="0"></hunterJetSpawn>
+    <hunterJetSpawn id="hunterJetSpawn (Hydra) (7)" plate="HUNTER" model="520" alpha="255" interior="0" posX="1822.4" posY="-2594" posZ="14.5" rotX="0" rotY="0" rotZ="0"></hunterJetSpawn>
+    <hunterJetSpawn id="hunterJetSpawn (Hydra) (8)" plate="HUNTER" model="520" alpha="255" interior="0" posX="1797.2" posY="-2595.3999" posZ="14.5" rotX="0" rotY="0" rotZ="0"></hunterJetSpawn>
+    <hunterJetSpawn id="hunterJetSpawn (Hydra) (9)" plate="HUNTER" model="520" alpha="255" interior="0" posX="1785.4" posY="-2595.8" posZ="14.4" rotX="0" rotY="0" rotZ="0"></hunterJetSpawn>
+    <hunterJetSpawn id="hunterJetSpawn (Hydra) (10)" plate="HUNTER" model="520" alpha="255" interior="0" posX="1773.9" posY="-2595.8999" posZ="14.5" rotX="0" rotY="0" rotZ="0"></hunterJetSpawn>
+    <hunterJetSpawn id="hunterJetSpawn (Hydra) (11)" plate="HUNTER" model="520" alpha="255" interior="0" posX="1807.2" posY="-2595.2" posZ="14.5" rotX="0" rotY="0" rotZ="0"></hunterJetSpawn>
+    <hunterJetSpawn id="hunterJetSpawn (Hydra) (12)" plate="HUNTER" model="520" alpha="255" interior="0" posX="1760.2" posY="-2596.7" posZ="14.5" rotX="0" rotY="0" rotZ="0"></hunterJetSpawn>
+    <hunterJetSpawn id="hunterJetSpawn (Hydra) (13)" plate="HUNTER" model="520" alpha="255" interior="0" posX="1744.7" posY="-2597.3" posZ="14.5" rotX="0" rotY="0" rotZ="0"></hunterJetSpawn>
+    <hunterJetSpawn id="hunterJetSpawn (Hydra) (14)" plate="HUNTER" model="520" alpha="255" interior="0" posX="1733.2" posY="-2597.2" posZ="14.5" rotX="0" rotY="0" rotZ="0"></hunterJetSpawn>
+    <hunterJetSpawn id="hunterJetSpawn (Hydra) (15)" plate="HUNTER" model="520" alpha="255" interior="0" posX="1719.1" posY="-2596.7" posZ="14.5" rotX="0" rotY="0" rotZ="0"></hunterJetSpawn>
+    <hunterSpawnpoint id="hunterSpawnpoint (1)" skin="0" posX="1841.1" posY="-2638.3" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (2)" skin="0" alpha="255" interior="0" posX="1839.6" posY="-2638.2" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (3)" skin="0" alpha="255" interior="0" posX="1837.5" posY="-2638.1001" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (4)" skin="0" alpha="255" interior="0" posX="1834.9" posY="-2638.5" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (5)" skin="0" alpha="255" interior="0" posX="1833.5" posY="-2638.7" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (6)" skin="0" alpha="255" interior="0" posX="1830.6" posY="-2639.3999" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (7)" skin="0" alpha="255" interior="0" posX="1829.2" posY="-2637.8" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (8)" skin="0" alpha="255" interior="0" posX="1825.4" posY="-2639.3" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (9)" skin="0" alpha="255" interior="0" posX="1822.4" posY="-2638.5" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (10)" skin="0" alpha="255" interior="0" posX="1818.4" posY="-2637.3" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (11)" skin="0" alpha="255" interior="0" posX="1825.3" posY="-2634" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (12)" skin="0" alpha="255" interior="0" posX="1826.6" posY="-2636.3" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (13)" skin="0" alpha="255" interior="0" posX="1821.4" posY="-2635.8" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (14)" skin="0" alpha="255" interior="0" posX="1831.6" posY="-2635" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (15)" skin="0" alpha="255" interior="0" posX="1829.8" posY="-2634.5" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (16)" skin="0" alpha="255" interior="0" posX="1833" posY="-2635.8" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (17)" skin="0" alpha="255" interior="0" posX="1835.3" posY="-2634.8999" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (18)" skin="0" alpha="255" interior="0" posX="1837.8" posY="-2637.3" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (19)" skin="0" alpha="255" interior="0" posX="1839.7" posY="-2635.1001" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (20)" skin="0" alpha="255" interior="0" posX="1841.9" posY="-2636.6001" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (21)" skin="0" alpha="255" interior="0" posX="1837.4" posY="-2634.8999" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (22)" skin="0" alpha="255" interior="0" posX="1835.6" posY="-2636.8999" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (23)" skin="0" alpha="255" interior="0" posX="1827.9" posY="-2633.3" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <hunterSpawnpoint id="hunterSpawnpoint (24)" skin="0" alpha="255" interior="0" posX="1823.3" posY="-2633.8999" posZ="13.5" rotX="0" rotY="0" rotZ="0"></hunterSpawnpoint>
+    <lobbyStart id="lobbyStart (2)" color="#0000FFFF" type="checkpoint" size="20" posX="1884.7" posY="-2637" posZ="12.6" rotX="0" rotY="0" rotZ="0"></lobbyStart>
+</map>
