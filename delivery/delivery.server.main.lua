@@ -370,6 +370,7 @@ function givePointsToDeliveryMan(points)
 		score = 0
 	end
 	score = score + points
+  displayMessageForAll(GOT_SCORE_TEXT_KEY, getPlayerName(deliveryMan)..": "..score.." points", nil, nil, 5000, 0.5, 0.9, 0, 255, 0 )
 	setElementData( deliveryMan, SCORE_KEY , score)
 end
 
@@ -379,7 +380,7 @@ function givePointsToDeliveryManBasedOnDistance()
     local scoreGivingDist = math.ceil(distToGoal / POINT_GIVING_DIST)
     if (scoreGivingDist < deliveryManLatestDistance) then
       givePointsToDeliveryMan(1)
-      displayMessageForAll(GOT_SCORE_TEXT_KEY, getPlayerName(deliveryMan).." got 1 point for getting closer to the goal!", nil, nil, 5000, 0.5, 0.9, 0, 255, 0 )
+
       deliveryManLatestDistance = scoreGivingDist
     end
   end
