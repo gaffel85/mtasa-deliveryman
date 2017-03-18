@@ -126,6 +126,15 @@ function respawnAllPlayers()
 	end
 end
 
+function reviveDeliveryMan()
+  local element = getElementsByType ( "deliveryCar" , mapRoot )[1]
+  local model = getElementData ( element, "model" )
+	local plate = getElementData ( element, "plate" )
+  local posX, posY, posZ = getElementPosition(deliveryMan)
+  deliveryCar = createVehicle(model, posX, posY, posZ, 0, 0, 0, plate)
+  spawnDeliveryMan(deliveryMan)
+end
+
 function setUpDeliveryManStuff()
 	if gameStarted then
 		outputDebugString("Game started ")
@@ -344,9 +353,11 @@ function markerHit( markerHit, matchingDimension )
 end
 addEventHandler( "onPlayerMarkerHit", getRootElement(), markerHit )
 
+
+
 function playerDied( ammo, attacker, weapon, bodypart )
 	if(source == deliveryMan) then
-		endRound()
+		--endRound()
 	else
 		setTimer( spawn, 2000, 1, source)
 	end
@@ -573,6 +584,16 @@ function quitPlayer ( quitType )
 	outputChatBox ( getPlayerName(source).. " has left the server (" .. quitType .. ")" )
 end
 addEventHandler ( "onPlayerQuit", getRootElement(), quitPlayer )
+
+function confirmDead ( sourcePlayer, command)
+  endRound()
+end
+addCommandHandler ( "dead", confirmDead )
+
+function revive ( sourcePlayer, command)
+  reviveDeliveryMan()
+end
+addCommandHandler ( "revive", revive )
 
 function setReloadTimes ( sourcePlayer, command, magSize, reloadTime)
   triggerClientEvent(getRootElement(), "onReloadTimeChangedRequest", getRootElement(), magSize, reloadTime)
