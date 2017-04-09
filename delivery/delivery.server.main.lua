@@ -211,6 +211,9 @@ end
 
 function startGameMap( startedMap )
 	outputDebugString("startGameMap")
+  setTime(19, 0)
+  setMinuteDuration(600000)
+
 	local mapRoot = getResourceRootElement( startedMap )
     spawnPoints = getElementsByType ( "hunterSpawnpoint" , mapRoot )
 	checkPointCoords = getElementsByType ( "checkpoint" , mapRoot )
@@ -497,8 +500,8 @@ function createMovingHunterJet(player)
 end
 
 function rewriteHistory(backups)
-  while #backups > 1 do
-    table.remove(backups, 2)
+  while #backups > 0 do
+    table.remove(backups, 1)
   end
 end
 
