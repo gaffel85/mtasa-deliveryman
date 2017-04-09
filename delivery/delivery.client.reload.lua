@@ -1,6 +1,8 @@
 local rocketsFired = {}
 local magSize = 8;
 local reloadTimeInMillis = 2000;
+local MAX_ROCKET_SPEED = 100;
+local ROCKET_SPEED = 0.1;
 
 function disableFireForHydra ( disable )
   if disable then
@@ -53,10 +55,11 @@ end
 function projectileFired ( )
   local projType = getProjectileType( source )
   if projType == 19 or projType == 20 then
-	   --missileFired()
+    velX, velY, velZ = getElementVelocity(source)
+	   setElementVelocity(source, velX*ROCKET_SPEED*MAX_ROCKET_SPEED, velY*ROCKET_SPEED*MAX_ROCKET_SPEED, velZ*ROCKET_SPEED*MAX_ROCKET_SPEED)
 	end
 end
---addEventHandler( "onClientProjectileCreation", getRootElement(), projectileFired )
+addEventHandler( "onClientProjectileCreation", getRootElement(), projectileFired )
 
 function playerPressedKey(button, press)
   if press and button == "lctrl" then
@@ -76,6 +79,19 @@ end
 addEvent("onReloadTimeChangedRequest", true)
 addEventHandler("onReloadTimeChangedRequest", getLocalPlayer(), reloadTimeChangedRequest)
 
+function missileSpeedChangeRequest(speed)
+  MAX_ROCKET_SPEED = tonumber(speed)
+  outputChatBox("Missile MAX speed: "..MAX_ROCKET_SPEED.."x")
+end
+addEvent("onMissileSpeedChangeRequest", true)
+addEventHandler("onMissileSpeedChangeRequest", getLocalPlayer(), missileSpeedChangeRequest)
+
+function missileSpeedStepRequest(speed)
+  ROCKET_SPEED = tonumber(speed)
+  outputChatBox("Missile speed step: "..ROCKET_SPEED.."x")
+end
+addEvent("onMissileSpeedStepRequest", true)
+addEventHandler("onMissileSpeedStepRequest", getLocalPlayer(), missileSpeedStepRequest)
 
 function displayMessageForPlayer ( ID, message, displayTime, posX, posY, r, g, b, alpha, scale )
 	triggerServerEvent("onDisplayClientText", resourceRoot, getLocalPlayer(), ID, message, displayTime, posX, posY, r, g, b, scale)

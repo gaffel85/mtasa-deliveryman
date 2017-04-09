@@ -86,9 +86,11 @@ function spawnDeliveryMan(thePlayer)
 end
 
 function trySpawnMovingHunter(thePlayer)
-  if deliveryMan ~= nil and arrayExists(huntersInVehicle, thePlayer) == true then
+  local masterPlayer = getElementsByType ( "player" )[0]
+  --local masterPlayer = deliveryMan
+  if masterPlayer ~= nil and arrayExists(huntersInVehicle, masterPlayer) == true then
     -- Respawn in hunter
-    local jet = createMovingHunterJet(thePlayer)
+    local jet = createMovingHunterJet(masterPlayer)
     if jet then
        outputDebugString("Will spawn moving hunter")
        spawnPlayer(thePlayer, 0, 0, 0, 0, 287)
@@ -383,8 +385,10 @@ function givePointsToDeliveryManBasedOnDistance()
     local scoreGivingDist = math.ceil(distToGoal / POINT_GIVING_DIST)
     if (scoreGivingDist < deliveryManLatestDistance) then
       givePointsToDeliveryMan(1)
+      local step = (deliveryManLatestDistance - scoreGivingDist) / distToGoal
 
       deliveryManLatestDistance = scoreGivingDist
+      triggerClientEvent(getRootElement(), "onMissileSpeedStepRequest", getRootElement(), step)
     end
   end
 end
@@ -466,13 +470,11 @@ function createDeliveryCar(element)
 end
 
 function createMovingHunterJet(player)
-  outputDebugString("1")
 	local playerBackups = hunterBackups[player];
 	if playerBackups ~= nil and #playerBackups > 0 then
-    outputDebugString("2")
 		local b = playerBackups[1]
-		local vehicle =  createVehicle(520, b.posX, b.posY, b.posZ, b.rotX, b.rotY, b.rotZ, "Hunter")
-    triggerClientEvent(player, "onSetGetThrusters", player, vehicle, b.thrusters)
+		local vehicle =  createVehicle(520, b.posX, b.posY, b.posZ + 500, b.rotX, b.rotY, b.rotZ, "Hunter")
+    triggerClientEvent(player, "onSetGetThrusters", player, vehicle, 5000)
 		setTimer(function()
       setElementVelocity(vehicle, b.velX, b.velY, b.velZ);
 		  setVehicleTurnVelocity(vehicle, b.turnX, b.turnY, b.turnZ)
@@ -486,7 +488,6 @@ function createMovingHunterJet(player)
     rewriteHistory(playerBackups)
     return vehicle
 	else
-    outputDebugString("3")
 		local posVehicle = deliveryCar
 		local posX, posY, posZ = getElementPosition ( posVehicle )
 		posZ = 1000
@@ -500,7 +501,7 @@ function createMovingHunterJet(player)
 end
 
 function rewriteHistory(backups)
-  while #backups > 0 do
+  while #backups > 2 do
     table.remove(backups, 1)
   end
 end
@@ -517,39 +518,36 @@ end
 
 local maxBackups = 3
 function saveHunterBackups()
-  if not roundActive then
-    return
+  --if not roundActive then
+  --  return
+  --end
+
+  local masterPlayer = getElementsByType ( "player" )[0]
+  --local masterPlayer = deliveryMan
+  if masterPlayer then
+    local posVehicle = getPedOccupiedVehicle(masterPlayer)
+    if posVehicle then
+      local posX, posY, posZ = getElementPosition ( posVehicle )
+      local rotX, rotY, rotZ = getElementRotation ( posVehicle )
+      local velX, velY, velZ = getElementVelocity ( posVehicle )
+      local turnX, turnY, turnZ = getVehicleTurnVelocity ( posVehicle )
+      local isLandingGearDown = false;--getVehicleLandingGearDown (posVehicle )
+
+      local playerBackups = hunterBackups[masterPlayer];
+      if playerBackups == nil then
+        playerBackups = {};
+        hunterBackups[masterPlayer] = playerBackups;
+      end
+
+      local backup = {posX = posX, posY = posY, posZ = posZ, rotX = rotX, rotY = rotY, rotZ = rotZ, velX = velX, velY = velY, velZ = velZ, turnX = turnX, turnY = turnY, turnZ = turnZ, landingGearDown = isLandingGearDown}
+
+      table.insert(playerBackups, backup)
+
+      if #playerBackups > maxBackups then
+        table.remove(playerBackups, 1)
+      end
+    end
   end
-
-	for i,v in ipairs(huntersInVehicle) do
-		if huntersInVehicle ~= nil then
-			local posVehicle = getPedOccupiedVehicle(v)
-			if posVehicle then
-				local posX, posY, posZ = getElementPosition ( posVehicle )
-				local rotX, rotY, rotZ = getElementRotation ( posVehicle )
-				local velX, velY, velZ = getElementVelocity ( posVehicle )
-				local turnX, turnY, turnZ = getVehicleTurnVelocity ( posVehicle )
-        local isLandingGearDown = getVehicleLandingGearDown (posVehicle )
-
-				local playerBackups = hunterBackups[v];
-				if playerBackups == nil then
-					playerBackups = {};
-					hunterBackups[v] = playerBackups;
-				end
-
-				local backup = {posX = posX, posY = posY, posZ = posZ, rotX = rotX, rotY = rotY, rotZ = rotZ, velX = velX, velY = velY, velZ = velZ, turnX = turnX, turnY = turnY, turnZ = turnZ, landingGearDown = isLandingGearDown}
-
-				table.insert(playerBackups, backup)
-
-				if #playerBackups > maxBackups then
-					table.remove(playerBackups, 1)
-				end
-
-        -- Get thrusters state
-        triggerClientEvent(v, "onSetGetThrusters", v)
-			end
-		end
-	end
 end
 
 function saveThrusterStatesRequest(state)
@@ -608,6 +606,11 @@ function setMissileWarningDist ( sourcePlayer, command, maxDist)
   triggerClientEvent(getRootElement(), "onMissileWarningDistChangedRequest", getRootElement(), maxDist)
 end
 addCommandHandler ( "warning", setMissileWarningDist )
+
+function setMissileSpeed ( sourcePlayer, command, speed)
+  triggerClientEvent(getRootElement(), "onMissileSpeedChangeRequest", getRootElement(), speed)
+end
+addCommandHandler ( "speed", setMissileSpeed )
 
 function commitSuicide ( sourcePlayer )
 	-- kill the player and make him responsible for it
