@@ -86,8 +86,8 @@ function spawnDeliveryMan(thePlayer)
 end
 
 function trySpawnMovingHunter(thePlayer)
-  local masterPlayer = getElementsByType ( "player" )[0]
-  --local masterPlayer = deliveryMan
+  --local masterPlayer = getElementsByType ( "player" )[0]
+  local masterPlayer = deliveryMan
   if masterPlayer ~= nil and arrayExists(huntersInVehicle, masterPlayer) == true then
     -- Respawn in hunter
     local jet = createMovingHunterJet(masterPlayer)
@@ -388,7 +388,7 @@ function givePointsToDeliveryManBasedOnDistance()
       local step = (deliveryManLatestDistance - scoreGivingDist) / distToGoal
 
       deliveryManLatestDistance = scoreGivingDist
-      triggerClientEvent(getRootElement(), "onMissileSpeedStepRequest", getRootElement(), step)
+      --triggerClientEvent(getRootElement(), "onMissileSpeedStepRequest", getRootElement(), step)
     end
   end
 end
@@ -518,12 +518,12 @@ end
 
 local maxBackups = 3
 function saveHunterBackups()
-  --if not roundActive then
-  --  return
-  --end
+  if not roundActive then
+    return
+  end
 
-  local masterPlayer = getElementsByType ( "player" )[0]
-  --local masterPlayer = deliveryMan
+  --local masterPlayer = getElementsByType ( "player" )[0]
+  local masterPlayer = deliveryMan
   if masterPlayer then
     local posVehicle = getPedOccupiedVehicle(masterPlayer)
     if posVehicle then
