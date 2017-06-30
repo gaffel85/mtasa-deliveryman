@@ -87,10 +87,10 @@ end
 
 function trySpawnMovingHunter(thePlayer)
   --local masterPlayer = getElementsByType ( "player" )[0]
-  local masterPlayer = deliveryMan
-  if masterPlayer ~= nil and arrayExists(huntersInVehicle, masterPlayer) == true then
+  local masterPlayer = thePlayer
+  if masterPlayer ~= nil then --and arrayExists(huntersInVehicle, masterPlayer) == true then
     -- Respawn in hunter
-    local jet = createMovingHunterJet(masterPlayer)
+    local jet = createMovingHunterJet(thePlayer)
     if jet then
        outputDebugString("Will spawn moving hunter")
        spawnPlayer(thePlayer, 0, 0, 0, 0, 287)
@@ -470,8 +470,8 @@ function createDeliveryCar(element)
 end
 
 function createMovingHunterJet(player)
-	local playerBackups = hunterBackups[player];
-	if playerBackups ~= nil and #playerBackups > 0 then
+	--local playerBackups = hunterBackups[player];
+	if false then --playerBackups ~= nil and #playerBackups > 0 then
 		local b = playerBackups[1]
 		local vehicle =  createVehicle(520, b.posX, b.posY, b.posZ + 500, b.rotX, b.rotY, b.rotZ, "Hunter")
     triggerClientEvent(player, "onSetGetThrusters", player, vehicle, 5000)
@@ -490,11 +490,16 @@ function createMovingHunterJet(player)
 	else
 		local posVehicle = deliveryCar
 		local posX, posY, posZ = getElementPosition ( posVehicle )
-		posZ = 1000
+		posZ = 500
 		local rotX, rotY, rotZ = getElementRotation ( posVehicle )
 		local velX, velY, velZ = getElementVelocity ( posVehicle )
 		--local turnX, turnY, turnZ = getVehicleTurnVelocity ( posVehicle )
-		local vehicle =  createVehicle(520, posX, posY, posZ, rotX, rotY, rotZ, plate)
+		local vehicle =  createVehicle(520, posX, posY, posZ, rotX, rotY, rotZ, "Hunter")
+    triggerClientEvent(player, "onSetGetThrusters", player, vehicle, 5000)
+		setTimer(function()
+      setElementVelocity(vehicle, velX, velY, velZ);
+      setVehicleLandingGearDown(vehicle, false)
+    end, 100, 1)
 		setElementVelocity(vehicle, velX, velY, velZ);
 		return vehicle
 	end
