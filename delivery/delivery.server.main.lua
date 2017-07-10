@@ -240,6 +240,7 @@ end
 
 function startLobby()
 	lobbyStartCheckpoint = createCheckPoint(lobbyStartCoord, 0, 0, 255)
+	deliveryCar = createDeliveryCar(getElementsByType ( "deliveryCar" , mapRoot )[1])
 	createHunterJets()
 end
 
